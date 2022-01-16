@@ -91,8 +91,8 @@ public class LoginController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Locale locale = Locale.getDefault();
-        if (locale.getDisplayLanguage() == "French") {
+        Locale l = Locale.getDefault();
+        if (l.equals(Locale.FRANCE) || l.equals(Locale.FRENCH) || l.equals(Locale.CANADA_FRENCH)) {
             language = "French";
             translateFrench();
         }
