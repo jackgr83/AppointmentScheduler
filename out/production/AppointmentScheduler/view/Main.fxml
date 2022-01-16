@@ -5,8 +5,8 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button layoutX="34.0" layoutY="132.0" mnemonicParsing="false" text="Customer Management" />
-      <Button layoutX="447.0" layoutY="132.0" mnemonicParsing="false" text="Reports" />
-      <Button layoutX="220.0" layoutY="132.0" mnemonicParsing="false" text="Appointment Management" />
+      <Button fx:id="CustomerButton" onAction="#handleCustomerButton" layoutX="34.0" layoutY="132.0" mnemonicParsing="false" text="Customer Management" />
+      <Button fx:id="ReportsButton" onAction="#handleReportsButton" layoutX="447.0" layoutY="132.0" mnemonicParsing="false" text="Reports" />
+      <Button fx:id="AppointmentButton" onAction="#handleAppointmentButton" layoutX="220.0" layoutY="132.0" mnemonicParsing="false" text="Appointment Management" />
    </children>
 </AnchorPane>
