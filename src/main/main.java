@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import utility.Database;
 
 public class main extends Application {
 
@@ -16,6 +17,7 @@ public class main extends Application {
     }
 
     public void start(Stage stage) throws Exception {
+        testDBConnection();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/Login.fxml"));
         controller.LoginController controller = new controller.LoginController();
         loader.setController(controller);
@@ -24,4 +26,10 @@ public class main extends Application {
         stage.setScene(scene);
         stage.show();
     }
+
+    void testDBConnection() throws Exception {
+        Database.testConnection();
+    }
+
+
 }

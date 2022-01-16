@@ -1,10 +1,11 @@
 <component name="libraryTable">
   <library name="JavaFX">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../../../../School/WGU/software_II/sdk/javafx-sdk-17.0.1/lib" />
+      <root url="file://$PROJECT_DIR$/../../../../javafx-sdk-17.0.1/lib" />
+      <root url="jar://$PROJECT_DIR$/../../../../mysql-connector-java-8.0.27/mysql-connector-java-8.0.27/mysql-connector-java-8.0.27.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
-    <jarDirectory url="file://$PROJECT_DIR$/../../../../School/WGU/software_II/sdk/javafx-sdk-17.0.1/lib" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../../javafx-sdk-17.0.1/lib" recursive="false" />
   </library>
 </component>
