@@ -17,7 +17,7 @@ public class main extends Application {
     }
 
     public void start(Stage stage) throws Exception {
-        testDBConnection();
+//        testDBConnection();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/Login.fxml"));
         controller.LoginController controller = new controller.LoginController();
         loader.setController(controller);
@@ -28,7 +28,7 @@ public class main extends Application {
     }
 
     void testDBConnection() throws Exception {
-        Database.testConnection();
+        Database.connect();
     }
 
 

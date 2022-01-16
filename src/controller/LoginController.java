@@ -16,13 +16,21 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.ZoneId;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
 
-
     @FXML
-    private Label LocationInfo;
+    private Label PasswordLabel;
+    @FXML
+    private Label LoginHeaderLabel;
+    @FXML
+    private Label UsernameLabel;
+    @FXML
+    private Label ErrorLabel;
+    @FXML
+    private Label LocationInfoLabel;
     @FXML
     private Button LoginButton;
     @FXML
@@ -30,11 +38,23 @@ public class LoginController implements Initializable {
     @FXML
     private TextField PasswordField;
 
-
+    String language = "English";
     Alert error = new Alert(Alert.AlertType.ERROR);
 
     void setLocation() {
-        LocationInfo.setText("Location: " + ZoneId.systemDefault().toString());
+        if (language == "French"){
+            LocationInfoLabel.setText("Emplacement: " + ZoneId.systemDefault().toString());
+        } else {
+            LocationInfoLabel.setText("Location: " + ZoneId.systemDefault().toString());
+        }
+    }
+
+    void translateFrench() {
+        LoginHeaderLabel.setText("Connexion");
+        UsernameLabel.setText("Nom d'utilisateur");
+        PasswordLabel.setText("Mot de passe");
+        LoginButton.setText("ouvrir une session");
+
     }
 
     public void handleLoginButton() throws SQLException, IOException {
@@ -52,6 +72,11 @@ public class LoginController implements Initializable {
             Scene scene = new Scene(parent);
             stage.setScene(scene);
             stage.show();
+        } else if (language == "French"){
+            error.setTitle("Erreur");
+            error.setHeaderText("Nom d'utilisateur ou mot de passe invalide");
+            error.showAndWait();
+            return;
         } else {
             error.setTitle("Error");
             error.setHeaderText("Invalid username or password");
@@ -66,6 +91,11 @@ public class LoginController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        Locale locale = Locale.getDefault();
+        if (locale.getDisplayLanguage() == "French") {
+            language = "French";
+            translateFrench();
+        }
         setLocation();
 
     }

@@ -10,11 +10,11 @@ public class Database {
     private static final String USER = "sqlUser";
     private static final String PASS = "Passw0rd!";
 
-    public static Connection connect() {
+    public static Connection getConnection() {
         return connection;
     }
 
-    public static void testConnection() throws Exception {
+    public static void connect() throws Exception {
         System.out.println("testing connection...");
         Class.forName(DRIVER);
         connection = DriverManager.getConnection(URL, USER, PASS);

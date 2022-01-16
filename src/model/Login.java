@@ -16,7 +16,7 @@ public class Login {
 
     public static boolean tryLogin(String username, String password) throws SQLException {
         String query = "SELECT * FROM USERS WHERE User_Name='" + username + "' AND Password='" + password + "'";
-        Statement sql = Database.connect().createStatement();
+        Statement sql = Database.getConnection().createStatement();
         ResultSet records = sql.executeQuery(query);
         if (records.next()) {
             user = new User();
