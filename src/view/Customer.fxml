@@ -9,15 +9,15 @@
 
 <AnchorPane prefHeight="398.0" prefWidth="785.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TableView layoutX="38.0" layoutY="94.0" prefHeight="197.0" prefWidth="703.0">
+      <TableView fx:id="CustomerTable" layoutX="38.0" layoutY="94.0" prefHeight="197.0" prefWidth="703.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="ID" />
-          <TableColumn prefWidth="119.0" text="Name" />
-            <TableColumn prefWidth="107.0" text="Phone" />
-            <TableColumn prefWidth="135.0" text="Address" />
-            <TableColumn prefWidth="75.0" text="Zip Code" />
-            <TableColumn prefWidth="90.0" text="Country" />
-            <TableColumn prefWidth="100.0" text="Division" />
+          <TableColumn fx:id="IDColumn" prefWidth="75.0" text="ID" />
+          <TableColumn fx:id="NameColumn" prefWidth="119.0" text="Name" />
+            <TableColumn fx:id="PhoneColumn" prefWidth="107.0" text="Phone" />
+            <TableColumn fx:id="AddressColumn" prefWidth="135.0" text="Address" />
+            <TableColumn fx:id="ZipCodeColumn" prefWidth="75.0" text="Zip Code" />
+            <TableColumn fx:id="CountryColumn" prefWidth="90.0" text="Country" />
+            <TableColumn fx:id="DivisionColumn" prefWidth="100.0" text="Division" />
         </columns>
       </TableView>
       <Label layoutX="97.0" layoutY="60.0" text="Customers">
@@ -25,9 +25,9 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Button layoutX="200.0" layoutY="325.0" mnemonicParsing="false" text="Add" />
-      <Button layoutX="266.0" layoutY="325.0" mnemonicParsing="false" text="Edit" />
-      <Button layoutX="330.0" layoutY="325.0" mnemonicParsing="false" text="Delete" />
-      <Button layoutX="608.0" layoutY="350.0" mnemonicParsing="false" text="Back" />
+      <Button fx:id="AddButton" onAction="#handleAddButton" layoutX="200.0" layoutY="325.0" mnemonicParsing="false" text="Add" />
+      <Button fx:id="EditButton" onAction="#handleEditButton" layoutX="266.0" layoutY="325.0" mnemonicParsing="false" text="Edit" />
+      <Button fx:id="DeleteButton" onAction="#handleDeleteButton" layoutX="330.0" layoutY="325.0" mnemonicParsing="false" text="Delete" />
+      <Button fx:id="BackButton" onAction="#handleBackButton" layoutX="608.0" layoutY="350.0" mnemonicParsing="false" text="Back" />
    </children>
 </AnchorPane>
