@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="649.0" prefWidth="953.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Appointment">
+   <children>
+      <Label layoutX="89.0" layoutY="42.0" text="Appointments">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <TabPane layoutX="130.0" layoutY="82.0" prefHeight="458.0" prefWidth="748.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Monthly">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="472.0" prefWidth="657.0">
+                     <children>
+                        <TableView layoutX="17.0" layoutY="14.0" prefHeight="389.0" prefWidth="715.0">
+                          <columns>
+                            <TableColumn prefWidth="35.0" text="ID" />
+                            <TableColumn prefWidth="57.0" text="Title" />
+                              <TableColumn prefWidth="76.0" text="Description" />
+                              <TableColumn prefWidth="72.0" text="Location" />
+                              <TableColumn prefWidth="64.0" text="Contact" />
+                              <TableColumn prefWidth="58.0" text="Type" />
+                              <TableColumn prefWidth="94.0" text="Start" />
+                              <TableColumn prefWidth="105.0" text="End" />
+                              <TableColumn prefWidth="87.0" text="Customer ID" />
+                              <TableColumn prefWidth="66.0" text="Creator ID" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Weekly">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="429.0" prefWidth="790.0">
+                     <children>
+                        <TableView layoutX="17.0" layoutY="14.0" prefHeight="389.0" prefWidth="715.0">
+                           <columns>
+                              <TableColumn prefWidth="35.0" text="ID" />
+                              <TableColumn prefWidth="57.0" text="Title" />
+                              <TableColumn prefWidth="76.0" text="Description" />
+                              <TableColumn prefWidth="72.0" text="Location" />
+                              <TableColumn prefWidth="64.0" text="Contact" />
+                              <TableColumn prefWidth="88.0" text="Type" />
+                              <TableColumn prefWidth="78.0" text="Start" />
+                              <TableColumn prefWidth="72.0" text="End" />
+                              <TableColumn prefWidth="91.0" text="Customer ID" />
+                              <TableColumn text="Creator ID" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+      <Button layoutX="176.0" layoutY="559.0" mnemonicParsing="false" text="Create New Appointment" />
+      <Button layoutX="353.0" layoutY="559.0" mnemonicParsing="false" text="Edit Appointment" />
+      <Button layoutX="492.0" layoutY="559.0" mnemonicParsing="false" text="Delete Appointment" />
+      <Button layoutX="765.0" layoutY="599.0" mnemonicParsing="false" text="Back" />
+   </children>
+</AnchorPane>

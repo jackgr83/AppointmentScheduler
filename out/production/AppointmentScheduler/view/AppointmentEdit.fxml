@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="592.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AppointmentAdd">
+    <children>
+        <Label layoutX="80.0" layoutY="31.0" text="Edit Appointment">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Label>
+        <Label layoutX="38.0" layoutY="78.0" text="ID:" />
+        <TextField disable="true" layoutX="110.0" layoutY="74.0" prefHeight="25.0" prefWidth="44.0" />
+        <Label layoutX="40.0" layoutY="112.0" text="Title:" />
+        <TextField layoutX="109.0" layoutY="108.0" />
+        <Label layoutX="38.0" layoutY="147.0" text="Description:" />
+        <Label layoutX="38.0" layoutY="183.0" text="Location:" />
+        <Label layoutX="40.0" layoutY="222.0" text="Contact:" />
+        <Label layoutX="39.0" layoutY="263.0" text="Type:" />
+        <Label layoutX="66.0" layoutY="357.0" text="Date:" />
+        <Label layoutX="66.0" layoutY="400.0" text="Time:" />
+        <TextField layoutX="109.0" layoutY="143.0" />
+        <TextField layoutX="109.0" layoutY="179.0" />
+        <Label layoutX="39.0" layoutY="308.0" text="Customer:" />
+        <TextField layoutX="109.0" layoutY="304.0" />
+        <DatePicker layoutX="110.0" layoutY="353.0" />
+        <ComboBox layoutX="109.0" layoutY="218.0" prefWidth="150.0" />
+        <ComboBox layoutX="109.0" layoutY="396.0" prefWidth="150.0" />
+        <ComboBox layoutX="108.0" layoutY="259.0" prefWidth="150.0" />
+        <Button layoutX="116.0" layoutY="470.0" mnemonicParsing="false" text="Save" />
+        <Button layoutX="184.0" layoutY="470.0" mnemonicParsing="false" text="Cancel" />
+    </children>
+</AnchorPane>
