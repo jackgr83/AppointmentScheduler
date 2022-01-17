@@ -51,6 +51,23 @@ public class CustomerDatabase {
         return id;
     }
 
+    public static Boolean updateCustomer(int id, String name, String address, String zip, String phone, int divisionId) throws SQLException {
+        String datetime = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
+        String command = "UPDATE customers SET Customer_Name='" + name + "', Address='" + address + "', Postal_Code='" + zip + "', Phone='" +
+                phone + "', Last_Update='" + datetime + "', Last_Updated_By='" + Login.getUser().getUserName() + "', Division_ID='" + divisionId +
+                "' WHERE Customer_ID='" + id + "';";
+        Statement sql = Database.getConnection().createStatement();
+        try {
+            sql.executeUpdate(command);
+            sql.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            sql.close();
+            return false;
+        }
+    }
+
     public static Boolean addCustomer(int id, String name, String address, String zip, String phone, int divisionId) throws SQLException {
         String datetime = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
         String command = "INSERT INTO CUSTOMERS \n" +
