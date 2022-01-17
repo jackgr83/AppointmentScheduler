@@ -7,9 +7,68 @@ import utility.Database;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class CustomerDatabase {
 
+    public static ObservableList<String> getDivisions(String country) throws SQLException {
+        ObservableList<String> divisions = FXCollections.observableArrayList();
+        String query = "SELECT * FROM COUNTRIES RIGHT OUTER JOIN " +
+                "first_level_divisions as d on COUNTRIES.Country_ID = d.Country_ID WHERE COUNTRIES.Country = '" + country + "';";
+        Statement sql = Database.getConnection().createStatement();
+        ResultSet records = sql.executeQuery(query);
+        while (records.next()) {
+            divisions.add(records.getString("Division"));
+        }
+        sql.close();
+        return divisions;
+    }
+
+    public static ObservableList<String> getAllCountries() throws SQLException {
+        ObservableList<String> allCountries = FXCollections.observableArrayList();
+        String query = "SELECT DISTINCT Country FROM COUNTRIES";
+        Statement sql = Database.getConnection().createStatement();
+        ResultSet records = sql.executeQuery(query);
+
+        while (records.next()) {
+            allCountries.add(records.getString("Country"));
+        }
+        sql.close();
+        return allCountries;
+    }
+
+    public static Integer getDivisionId(String division) throws SQLException {
+        Integer id = 0;
+        String query = "SELECT Division_ID FROM first_level_divisions WHERE Division = '" + division + "';";
+        Statement sql = Database.getConnection().createStatement();
+        ResultSet records = sql.executeQuery(query);
+        while (records.next()){
+            id = records.getInt("Division_ID");
+        }
+        sql.close();
+        return id;
+    }
+
+    public static Boolean addCustomer(int id, String name, String address, String zip, String phone, int divisionId) throws SQLException {
+        String datetime = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
+        String command = "INSERT INTO CUSTOMERS \n" +
+                "VALUES('" + id + "', '" + name + "', '" + address + "', '" + zip + "', '" + phone + "', '" +
+                datetime + "', '" + Login.getUser().getUserName() + "', '" +
+                datetime + "', '" + Login.getUser().getUserName() + "', '" + divisionId + "');";
+        Statement sql = Database.getConnection().createStatement();
+        try {
+            sql.executeUpdate(command);
+            sql.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            sql.close();
+            return false;
+        }
+
+    }
 
     public static ObservableList<Customer> getAllCustomers() throws SQLException {
         ObservableList<Customer> allCustomers = FXCollections.observableArrayList();

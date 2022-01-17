@@ -19,7 +19,7 @@ public class Login {
         Statement sql = Database.getConnection().createStatement();
         ResultSet records = sql.executeQuery(query);
         if (records.next()) {
-            user = new User();
+            user = new User(records.getString("User_Name"), records.getInt("User_ID"));
             sql.close();
             Log.log(username, true);
             return true;
@@ -29,5 +29,9 @@ public class Login {
             return false;
         }
 
+    }
+
+    public static User getUser() {
+        return user;
     }
 }
