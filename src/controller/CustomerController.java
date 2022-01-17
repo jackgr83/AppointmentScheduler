@@ -6,9 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Customer;
@@ -17,6 +15,7 @@ import model.CustomerDatabase;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class CustomerController implements Initializable {
@@ -44,6 +43,9 @@ public class CustomerController implements Initializable {
     private TableColumn<Customer, String> CountryColumn;
     @FXML
     private TableColumn<Customer, String> DivisionColumn;
+
+    Alert error = new Alert(Alert.AlertType.ERROR);
+    Alert warn = new Alert(Alert.AlertType.WARNING);
 
     public void handleBackButton() throws IOException {
         Stage stage = (Stage) BackButton.getScene().getWindow();
@@ -82,6 +84,23 @@ public class CustomerController implements Initializable {
     }
 
     public void handleDeleteButton() throws IOException {
+        Customer selectedCustomer = CustomerTable.getSelectionModel().getSelectedItem();
+        if (selectedCustomer == null) {
+            error.setTitle("Error");
+            error.setHeaderText("No customer selected");
+            error.showAndWait();
+            return;
+        }
+        String message = "Are you sure you want to delete Customer: " + selectedCustomer.getId() + " and all their appointments?";
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, message, ButtonType.YES, ButtonType.NO);
+        confirm.setTitle("Warning");
+        Optional<ButtonType> clicked = confirm.showAndWait();
+
+        if (clicked.get() == ButtonType.YES) {
+            Boolean deletedAppts = true;
+            Boolean deletedCust = false;
+
+        }
 
     }
 
