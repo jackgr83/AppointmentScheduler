@@ -68,6 +68,20 @@ public class CustomerDatabase {
         }
     }
 
+    public static Boolean deleteCustomer(int id) throws SQLException {
+        String command = "DELETE FROM customers WHERE Customer_ID ='" + id + "'";
+        Statement sql = Database.getConnection().createStatement();
+        try {
+            sql.executeUpdate(command);
+            sql.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            sql.close();
+            return false;
+        }
+    }
+
     public static Boolean addCustomer(int id, String name, String address, String zip, String phone, int divisionId) throws SQLException {
         String datetime = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
         String command = "INSERT INTO CUSTOMERS \n" +
@@ -110,4 +124,6 @@ public class CustomerDatabase {
         sql.close();
         return allCustomers;
     }
+
+
 }

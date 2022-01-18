@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import model.AppointmentDatabase;
 import model.Customer;
 import model.CustomerDatabase;
 
@@ -83,7 +84,7 @@ public class CustomerController implements Initializable {
         stage.show();
     }
 
-    public void handleDeleteButton() throws IOException {
+    public void handleDeleteButton() throws IOException, SQLException {
         Customer selectedCustomer = CustomerTable.getSelectionModel().getSelectedItem();
         if (selectedCustomer == null) {
             error.setTitle("Error");
@@ -97,9 +98,24 @@ public class CustomerController implements Initializable {
         Optional<ButtonType> clicked = confirm.showAndWait();
 
         if (clicked.get() == ButtonType.YES) {
-            Boolean deletedAppts = true;
-            Boolean deletedCust = false;
+            Boolean deletedAppts = AppointmentDatabase.deleteCustomerAppointments(selectedCustomer.getId());
+            Boolean deletedCust = CustomerDatabase.deleteCustomer(selectedCustomer.getId());
 
+            if (deletedAppts && deletedCust) {
+                Alert conf = new Alert(Alert.AlertType.CONFIRMATION);
+                conf.setTitle("Success");
+                conf.setHeaderText("Customer and all related appointments have been deleted");
+                conf.showAndWait();
+            } else {
+                warn.setTitle("Failure");
+                warn.setHeaderText("Failed to delete customer or customer's appointments");
+                warn.showAndWait();
+            }
+            try {
+                populateCustomerTable();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
     }
