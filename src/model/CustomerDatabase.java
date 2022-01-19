@@ -13,6 +13,18 @@ import java.time.format.DateTimeFormatter;
 
 public class CustomerDatabase {
 
+    public static Integer getCustomerId(String name) throws SQLException {
+        Integer id = 0;
+        String query = "SELECT * FROM customers WHERE Customer_Name='" + name + "';";
+        Statement sql = Database.getConnection().createStatement();
+        ResultSet records = sql.executeQuery(query);
+        while (records.next()) {
+            id = records.getInt("Customer_ID");
+        }
+        sql.close();
+        return id;
+    }
+
     public static ObservableList<String> getDivisions(String country) throws SQLException {
         ObservableList<String> divisions = FXCollections.observableArrayList();
         String query = "SELECT * FROM COUNTRIES RIGHT OUTER JOIN " +
@@ -100,6 +112,21 @@ public class CustomerDatabase {
         }
 
     }
+
+    public static ObservableList<String> getCustomerNames() throws SQLException {
+        ObservableList<String> customers = FXCollections.observableArrayList();
+        String query = "SELECT * FROM customers";
+        Statement sql = Database.getConnection().createStatement();
+        ResultSet records = sql.executeQuery(query);
+        String name = "";
+        while(records.next()) {
+            name = records.getString("Customer_Name");
+            customers.add(name);
+        }
+        sql.close();
+        return customers;
+    }
+
 
     public static ObservableList<Customer> getAllCustomers() throws SQLException {
         ObservableList<Customer> allCustomers = FXCollections.observableArrayList();

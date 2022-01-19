@@ -64,9 +64,9 @@
           </Tab>
         </tabs>
       </TabPane>
-      <Button fx:id="Create" layoutX="176.0" layoutY="559.0" mnemonicParsing="false" text="Create New Appointment" />
-      <Button fx:id="Edit" layoutX="353.0" layoutY="559.0" mnemonicParsing="false" text="Edit Appointment" />
-      <Button fx:id="Delete" layoutX="492.0" layoutY="559.0" mnemonicParsing="false" text="Delete Appointment" />
-      <Button fx:id="Back" layoutX="765.0" layoutY="599.0" mnemonicParsing="false" text="Back" />
+      <Button fx:id="Create" onAction="#handleCreateButton" layoutX="176.0" layoutY="559.0" mnemonicParsing="false" text="Create New Appointment" />
+      <Button fx:id="Edit" onAction="#handleEditButton" layoutX="353.0" layoutY="559.0" mnemonicParsing="false" text="Edit Appointment" />
+      <Button fx:id="Delete" onAction="#handleDeleteButton" layoutX="492.0" layoutY="559.0" mnemonicParsing="false" text="Delete Appointment" />
+      <Button fx:id="Back" onAction="#handleBackButton" layoutX="765.0" layoutY="599.0" mnemonicParsing="false" text="Back" />
    </children>
 </AnchorPane>

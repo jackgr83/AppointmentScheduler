@@ -12,7 +12,7 @@ import java.time.ZoneId;
 public class Login {
 
     private static User user;
-    private static ZoneId zoneId;
+
 
     public static boolean tryLogin(String username, String password) throws SQLException {
         String query = "SELECT * FROM USERS WHERE User_Name='" + username + "' AND Password='" + password + "'";
@@ -20,8 +20,8 @@ public class Login {
         ResultSet records = sql.executeQuery(query);
         if (records.next()) {
             user = new User(records.getString("User_Name"), records.getInt("User_ID"));
-            sql.close();
             Log.log(username, true);
+            sql.close();
             return true;
         } else {
             sql.close();
