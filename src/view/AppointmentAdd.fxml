@@ -17,24 +17,24 @@
          </font>
       </Label>
       <Label layoutX="38.0" layoutY="78.0" text="ID:" />
-      <TextField disable="true" layoutX="110.0" layoutY="74.0" prefHeight="25.0" prefWidth="44.0" />
+      <TextField fx:id="id" disable="true" layoutX="110.0" layoutY="74.0" prefHeight="25.0" prefWidth="44.0" />
       <Label layoutX="40.0" layoutY="112.0" text="Title:" />
-      <TextField layoutX="109.0" layoutY="108.0" />
+      <TextField fx:id="title" layoutX="109.0" layoutY="108.0" />
       <Label layoutX="38.0" layoutY="147.0" text="Description:" />
       <Label layoutX="38.0" layoutY="183.0" text="Location:" />
       <Label layoutX="40.0" layoutY="222.0" text="Contact:" />
       <Label layoutX="39.0" layoutY="263.0" text="Type:" />
       <Label layoutX="66.0" layoutY="357.0" text="Date:" />
       <Label layoutX="66.0" layoutY="400.0" text="Time:" />
-      <TextField layoutX="109.0" layoutY="143.0" />
-      <TextField layoutX="109.0" layoutY="179.0" />
+      <TextField fx:id="desc" layoutX="109.0" layoutY="143.0" />
+      <TextField fx:id="loc" layoutX="109.0" layoutY="179.0" />
       <Label layoutX="39.0" layoutY="308.0" text="Customer:" />
-      <TextField layoutX="109.0" layoutY="304.0" />
-      <DatePicker layoutX="110.0" layoutY="353.0" />
-      <ComboBox layoutX="109.0" layoutY="218.0" prefWidth="150.0" />
-      <ComboBox layoutX="109.0" layoutY="396.0" prefWidth="150.0" />
-      <ComboBox layoutX="108.0" layoutY="259.0" prefWidth="150.0" />
-      <Button layoutX="116.0" layoutY="470.0" mnemonicParsing="false" text="Save" />
-      <Button layoutX="184.0" layoutY="470.0" mnemonicParsing="false" text="Cancel" />
+      <TextField fx:id="cust" layoutX="109.0" layoutY="304.0" />
+      <DatePicker fx:id="date" layoutX="110.0" layoutY="353.0" />
+      <ComboBox fx:id="cont" layoutX="109.0" layoutY="218.0" prefWidth="150.0" />
+      <ComboBox fx:id="time" layoutX="109.0" layoutY="396.0" prefWidth="150.0" />
+      <ComboBox fx:id="type" layoutX="108.0" layoutY="259.0" prefWidth="150.0" />
+      <Button fx:id="save" layoutX="116.0" layoutY="470.0" mnemonicParsing="false" text="Save" />
+      <Button fx:id="cancel" layoutX="184.0" layoutY="470.0" mnemonicParsing="false" text="Cancel" />
    </children>
 </AnchorPane>
