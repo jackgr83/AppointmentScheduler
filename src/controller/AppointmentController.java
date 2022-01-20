@@ -96,16 +96,31 @@ public class AppointmentController implements Initializable {
 
     public void handleEditButton() throws IOException {
 
+        if (MonthlyTab.isSelected()) {
+            Appointment selectedAppt = MonthlyTable.getSelectionModel().getSelectedItem();
+            Stage stage = (Stage) Edit.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/AppointmentEdit.fxml"));
+            AppointmentEditController controller = new AppointmentEditController(selectedAppt);
+            loader.setController(controller);
+            Parent parent = loader.load();
+            Scene scene = new Scene(parent);
+            stage.setScene(scene);
+            stage.show();
+        } else {
+            Appointment selectedAppt = WeeklyTable.getSelectionModel().getSelectedItem();
+            Stage stage = (Stage) Edit.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/AppointmentEdit.fxml"));
+            AppointmentEditController controller = new AppointmentEditController(selectedAppt);
+            loader.setController(controller);
+            Parent parent = loader.load();
+            Scene scene = new Scene(parent);
+            stage.setScene(scene);
+            stage.show();
+        }
 
 
-        Stage stage = (Stage) Edit.getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/AppointmentEdit.fxml"));
-        AppointmentEditController controller = new AppointmentEditController();
-        loader.setController(controller);
-        Parent parent = loader.load();
-        Scene scene = new Scene(parent);
-        stage.setScene(scene);
-        stage.show();
+
+
     }
 
     public void handleCreateButton() throws IOException {
