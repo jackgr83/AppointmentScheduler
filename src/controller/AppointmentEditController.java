@@ -99,18 +99,24 @@ public class AppointmentEditController implements Initializable {
             error.showAndWait();
             return;
         }
+        // TODO: Check that appointment start < end
+
+
+        // TODO: Check for overlapping appointments for customers
+
         // Check business hours
-//        String[] businessHoursUtc = {"13","14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "00", "01", "02"};
-//        String utcStart = AppointmentDatabase.convertToUtc(start);
-//        String utcEnd = AppointmentDatabase.convertToUtc(end);
-//        if (!Arrays.asList(businessHoursUtc).contains(utcStart.split("\\s+")[1].substring(0, 2)) ||
-//                !Arrays.asList(businessHoursUtc).contains(utcEnd.split("\\s+")[1].substring(0, 2))) {
-//            Alert error = new Alert(Alert.AlertType.ERROR);
-//            error.setTitle("Error");
-//            error.setHeaderText("Appointment start/end time is outside business hours (8:00AM-10:00PM EST)");
-//            error.showAndWait();
-//            return;
-//        }
+        String[] businessHoursUtc = {"13","14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "00", "01", "02"};
+        String utcStart = AppointmentDatabase.convertToUtc(start);
+        String utcEnd = AppointmentDatabase.convertToUtc(end);
+        if (!Arrays.asList(businessHoursUtc).contains(utcStart.split("\\s+")[1].substring(0, 2)) ||
+                !Arrays.asList(businessHoursUtc).contains(utcEnd.split("\\s+")[1].substring(0, 2)) ||
+                (pmSt.isSelected() && amEnd.isSelected())) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Error");
+            error.setHeaderText("Appointment start/end time is outside business hours (8:00AM-10:00PM EST)");
+            error.showAndWait();
+            return;
+        }
 
         Boolean successful = AppointmentDatabase.updateAppointment(id, ttl, dsc, lc, tp, start, end, custId, userId, contId);
 

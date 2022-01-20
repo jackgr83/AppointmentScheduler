@@ -107,6 +107,11 @@ public class AppointmentAddController implements Initializable {
             error.showAndWait();
             return;
         }
+
+        // TODO: Check that appointment start < end
+
+        // TODO: Check for overlapping appointments for customers
+
         // Check business hours
         String[] businessHoursUtc = {"13","14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "00", "01", "02"};
         String utcStart = AppointmentDatabase.convertToUtc(start);
