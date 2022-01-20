@@ -66,17 +66,18 @@ public class AppointmentAddController implements Initializable {
         stage.show();
     }
 
-    public void handleSave() throws IOException, SQLException {
+    public void handleSave() throws Exception {
         // get all fields, check for errors, add appt to database, confirm, re-populate tables.
         String ttl = title.getText();
         String dsc = desc.getText();
         String lc = loc.getText();
         String cnt = cont.getValue().toString();
         String tp = type.getValue().toString();
-        LocalDate dt = date.getValue();
-        LocalDateTime starttime = null;
-        LocalDateTime endtime = null;
-
+        String dt = date.getValue().toString();
+        String starttime = sttime.getText() + ":00";
+        String endtime = etime.getText() + ":00";
+        String start = dt + " " + starttime;
+        String end = dt + " " + endtime;
 
 
         int custId = CustomerDatabase.getCustomerId(cust.getValue().toString());
@@ -90,19 +91,8 @@ public class AppointmentAddController implements Initializable {
             return;
         }
 
-        try {
-            starttime = LocalDateTime.of(dt, LocalTime.parse(sttime.getText(), DateTimeFormatter.ofPattern("HH:MM")));
-            endtime = LocalDateTime.of(dt, LocalTime.parse(etime.getText(), DateTimeFormatter.ofPattern("HH:MM")));
-        } catch (DateTimeParseException e) {
-            error.setTitle("Error");
-            error.setHeaderText("Invalid start or end time. Please enter in HH:MM format, including leading 0s");
-            error.showAndWait();
-            return;
-        }
-        ZonedDateTime stdatetime = ZonedDateTime.of(starttime, ZoneId.systemDefault()).withZoneSameInstant(ZoneOffset.UTC);
-        ZonedDateTime enddatetime = ZonedDateTime.of(endtime, ZoneId.systemDefault()).withZoneSameInstant(ZoneOffset.UTC);
+        Boolean successful = AppointmentDatabase.addAppointment(id, ttl, dsc, lc, tp, start, end, custId, userId, contId);
 
-        Boolean successful = AppointmentDatabase.addAppointment(id, ttl, dsc, lc, tp, stdatetime, enddatetime, custId, userId, contId);
 
         if (successful) {
             confirm.setTitle("Success!");

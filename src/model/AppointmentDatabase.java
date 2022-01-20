@@ -7,10 +7,15 @@ import utility.Database;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class AppointmentDatabase {
 
@@ -42,13 +47,11 @@ public class AppointmentDatabase {
 
 
 
-    public static Boolean updateAppointment(int id, String title, String desc, String loc, String type, ZonedDateTime start,
-                                         ZonedDateTime end, int custId, int userId, int contId) throws SQLException {
+    public static Boolean updateAppointment(int id, String title, String desc, String loc, String type, String start,
+                                         String end, int custId, int userId, int contId) throws Exception {
         String now = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        String sdt = start.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        String edt = end.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String command = "UPDATE appointments SET Title='" + title + "', Description='" + desc + "', Location='" + loc + "', Type='" + type + "', Start='" +
-                sdt + "', End='" + edt + "', Last_Update='" + now + "', Last_Updated_By='" + Login.getUser().getUserName() + "', Customer_ID='" + custId +
+                convertToUtc(start) + "', End='" + convertToUtc(end) + "', Last_Update='" + now + "', Last_Updated_By='" + Login.getUser().getUserName() + "', Customer_ID='" + custId +
                 "', User_ID='" + userId + "', Contact_ID='" + contId + "' WHERE Appointment_ID='" + id + "';";
         Statement sql = Database.getConnection().createStatement();
         try {
@@ -62,14 +65,12 @@ public class AppointmentDatabase {
         }
     }
 
-    public static Boolean addAppointment(int id, String title, String desc, String loc, String type, ZonedDateTime start,
-                                         ZonedDateTime end, int custId, int userId, int contId) throws SQLException {
+    public static Boolean addAppointment(int id, String title, String desc, String loc, String type, String start,
+                                         String end, int custId, int userId, int contId) throws Exception {
         String now = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        String sdt = start.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        String edt = end.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String command = "INSERT INTO Appointments \n" +
                 "VALUES('" + id + "', '" + title + "', '" + desc + "', '" + loc + "', '" + type + "', '" +
-                sdt + "', '" + edt + "', '" + now + "', '" + Login.getUser().getUserName() + "', '" + now +
+                convertToUtc(start) + "', '" + convertToUtc(end) + "', '" + now + "', '" + Login.getUser().getUserName() + "', '" + now +
                 "', '" + Login.getUser().getUserName() + "', '" + custId + "', '" + userId + "', '" + contId + "');";
         Statement sql = Database.getConnection().createStatement();
         try {
@@ -95,7 +96,7 @@ public class AppointmentDatabase {
         return rowCount;
     }
 
-    public static ObservableList<Appointment> getAllMonthlyAppointments() throws SQLException {
+    public static ObservableList<Appointment> getAllMonthlyAppointments() throws Exception {
         ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
         int month = LocalDate.now().getMonthValue();
         String query = "SELECT * FROM appointments as a INNER JOIN contacts as c on a.Contact_ID = c.Contact_ID" +
@@ -111,8 +112,8 @@ public class AppointmentDatabase {
                     records.getString("Location"),
                     records.getString("Contact_Name"),
                     records.getString("Type"),
-                    records.getString("Start"),
-                    records.getString("End"),
+                    convertToLocal(records.getString("Start")),
+                    convertToLocal(records.getString("End")),
                     records.getInt("Customer_ID"),
                     records.getInt("User_ID")
             );
@@ -122,7 +123,27 @@ public class AppointmentDatabase {
         return allAppointments;
     }
 
-    public static ObservableList<Appointment> getAllWeeklyAppointments() throws SQLException {
+    public static String convertToLocal(String utc) throws ParseException {
+        DateFormat utcFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        utcFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date utcTime = utcFormat.parse(utc);
+        DateFormat localFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        localFormat.setTimeZone(TimeZone.getDefault());
+        System.out.println("Converting from UTC: " + utc + " to Local: " + localFormat.format(utcTime));
+        return(localFormat.format(utcTime));
+    }
+
+    public static String convertToUtc(String local) throws ParseException {
+        DateFormat localFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        localFormat.setTimeZone(TimeZone.getDefault());
+        Date localTime = localFormat.parse(local);
+        DateFormat utcFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        utcFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        System.out.println("Converting from Local: " + local + " to UTC: " + utcFormat.format(localTime));
+        return(utcFormat.format(localTime));
+    }
+
+    public static ObservableList<Appointment> getAllWeeklyAppointments() throws SQLException, ParseException {
         ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
         String query = "SELECT * FROM appointments as a INNER JOIN contacts as c on a.Contact_ID = c.Contact_ID" +
                 " WHERE a.Start >='" + LocalDate.now().minusWeeks(1) + "' AND a.Start <='" + LocalDate.now().plusWeeks(1) + "'";
@@ -137,8 +158,8 @@ public class AppointmentDatabase {
                     records.getString("Location"),
                     records.getString("Contact_Name"),
                     records.getString("Type"),
-                    records.getString("Start"),
-                    records.getString("End"),
+                    convertToLocal(records.getString("Start")),
+                    convertToLocal(records.getString("End")),
                     records.getInt("Customer_ID"),
                     records.getInt("User_ID")
             );

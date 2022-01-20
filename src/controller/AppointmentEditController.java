@@ -59,7 +59,7 @@ public class AppointmentEditController implements Initializable {
     }
 
     // time not updating
-    public void handleSave() throws SQLException, IOException {
+    public void handleSave() throws Exception {
         // get all fields, check for errors, add appt to database, confirm, re-populate tables.
         Integer id = Integer.parseInt(IdField.getText());
         String ttl = title.getText();
@@ -67,9 +67,11 @@ public class AppointmentEditController implements Initializable {
         String lc = loc.getText();
         String cnt = cont.getValue().toString();
         String tp = type.getValue().toString();
-        LocalDate dt = date.getValue();
-        LocalDateTime starttime = null;
-        LocalDateTime endtime = null;
+        String dt = date.getValue().toString();
+        String starttime = sttime.getText() + ":00";
+        String endtime = etime.getText() + ":00";
+        String start = dt + " " + starttime;
+        String end = dt + " " + endtime;
 
 
 
@@ -84,19 +86,10 @@ public class AppointmentEditController implements Initializable {
             return;
         }
 
-        try {
-            starttime = LocalDateTime.of(dt, LocalTime.parse(sttime.getText(), DateTimeFormatter.ofPattern("HH:MM")));
-            endtime = LocalDateTime.of(dt, LocalTime.parse(etime.getText(), DateTimeFormatter.ofPattern("HH:MM")));
-        } catch (DateTimeParseException e) {
-            error.setTitle("Error");
-            error.setHeaderText("Invalid start or end time. Please enter in HH:MM format, including leading 0s");
-            error.showAndWait();
-            return;
-        }
-        ZonedDateTime stdatetime = ZonedDateTime.of(starttime, ZoneId.systemDefault()).withZoneSameInstant(ZoneOffset.UTC);
-        ZonedDateTime enddatetime = ZonedDateTime.of(endtime, ZoneId.systemDefault()).withZoneSameInstant(ZoneOffset.UTC);
 
-        Boolean successful = AppointmentDatabase.updateAppointment(id, ttl, dsc, lc, tp, stdatetime, enddatetime, custId, userId, contId);
+        Boolean successful = AppointmentDatabase.updateAppointment(id, ttl, dsc, lc, tp, start, end, custId, userId, contId);
+
+
 
         if (successful) {
             confirm.setTitle("Success!");
@@ -131,6 +124,7 @@ public class AppointmentEditController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
         IdField.setText(String.valueOf(appointment.getId()));
         title.setText(appointment.getTitle());
         desc.setText(appointment.getDesc());
@@ -142,6 +136,7 @@ public class AppointmentEditController implements Initializable {
         type.setItems(FXCollections.observableArrayList("Introduction", "Status Update", "One on One", "Review"));
         type.getSelectionModel().select(appointment.getType());
         date.setValue(LocalDate.parse(appointment.getStart(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        System.out.println(date.getValue().toString());
         try {
             cust.setItems(CustomerDatabase.getCustomerNames());
             cust.getSelectionModel().select(CustomerDatabase.getCustomerName(appointment.getCustId()));

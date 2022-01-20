@@ -16,6 +16,7 @@ import model.CustomerDatabase;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -92,7 +93,7 @@ public class AppointmentController implements Initializable {
         stage.show();
     }
 
-    public void handleDeleteButton() throws SQLException {
+    public void handleDeleteButton() throws Exception {
         Appointment selectedAppt;
         if (MonthlyTab.isSelected()) {
             selectedAppt = MonthlyTable.getSelectionModel().getSelectedItem();
@@ -155,15 +156,9 @@ public class AppointmentController implements Initializable {
             stage.show();
         }
 
-
-
-
     }
 
     public void handleCreateButton() throws IOException {
-
-
-
         Stage stage = (Stage) Create.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/AppointmentAdd.fxml"));
         AppointmentAddController controller = new AppointmentAddController();
@@ -174,13 +169,14 @@ public class AppointmentController implements Initializable {
         stage.show();
     }
 
-    public void populateAppointments() throws SQLException {
+    public void populateAppointments() throws Exception {
         monthlyId.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("id"));
         monthlyTitle.setCellValueFactory(new PropertyValueFactory<Appointment, String>("title"));
         monthlyDesc.setCellValueFactory(new PropertyValueFactory<Appointment, String>("desc"));
         monthlyLoc.setCellValueFactory(new PropertyValueFactory<Appointment, String>("loc"));
         monthlyCont.setCellValueFactory(new PropertyValueFactory<Appointment, String>("cont"));
         monthlyType.setCellValueFactory(new PropertyValueFactory<Appointment, String>("type"));
+        // convert from UTC back to local
         monthlySt.setCellValueFactory(new PropertyValueFactory<Appointment, String>("start"));
         monthlyEnd.setCellValueFactory(new PropertyValueFactory<Appointment, String>("end"));
         monthlyCustId.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("custId"));
@@ -192,6 +188,7 @@ public class AppointmentController implements Initializable {
         weeklyLoc.setCellValueFactory(new PropertyValueFactory<Appointment, String>("loc"));
         weeklyCont.setCellValueFactory(new PropertyValueFactory<Appointment, String>("cont"));
         weeklyType.setCellValueFactory(new PropertyValueFactory<Appointment, String>("type"));
+        // convert from UTC back to local
         weeklySt.setCellValueFactory(new PropertyValueFactory<Appointment, String>("start"));
         weeklyEnd.setCellValueFactory(new PropertyValueFactory<Appointment, String>("end"));
         weeklyCustId.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("custId"));
@@ -203,7 +200,7 @@ public class AppointmentController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             populateAppointments();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.out.println(e);
         }
     }
