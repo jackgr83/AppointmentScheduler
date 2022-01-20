@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class AppointmentAddController implements Initializable {
@@ -67,7 +68,6 @@ public class AppointmentAddController implements Initializable {
     }
 
     public void handleSave() throws Exception {
-        // get all fields, check for errors, add appt to database, confirm, re-populate tables.
         String ttl = title.getText();
         String dsc = desc.getText();
         String lc = loc.getText();
@@ -78,8 +78,6 @@ public class AppointmentAddController implements Initializable {
         String endtime = etime.getText() + ":00";
         String start = dt + " " + starttime;
         String end = dt + " " + endtime;
-
-
         int custId = CustomerDatabase.getCustomerId(cust.getValue().toString());
         int userId = Login.getUser().getUserId();
         int contId = AppointmentDatabase.getContactId(cont.getValue().toString());
@@ -87,6 +85,18 @@ public class AppointmentAddController implements Initializable {
         if (ttl.isBlank() || dsc.isBlank() || lc.isBlank() || cnt.isBlank() || tp.isBlank()) {
             error.setTitle("Error");
             error.setHeaderText("Please fill in all fields");
+            error.showAndWait();
+            return;
+        }
+        // Check business hours
+        String[] businessHoursUtc = {"13","14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "00", "01", "02"};
+        String utcStart = AppointmentDatabase.convertToUtc(start);
+        String utcEnd = AppointmentDatabase.convertToUtc(end);
+        if (!Arrays.asList(businessHoursUtc).contains(utcStart.split("\\s+")[1].substring(0, 2)) ||
+                !Arrays.asList(businessHoursUtc).contains(utcEnd.split("\\s+")[1].substring(0, 2))) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Error");
+            error.setHeaderText("Appointment start/end time is outside business hours (8:00AM-10:00PM EST)");
             error.showAndWait();
             return;
         }

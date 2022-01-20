@@ -176,7 +176,6 @@ public class AppointmentController implements Initializable {
         monthlyLoc.setCellValueFactory(new PropertyValueFactory<Appointment, String>("loc"));
         monthlyCont.setCellValueFactory(new PropertyValueFactory<Appointment, String>("cont"));
         monthlyType.setCellValueFactory(new PropertyValueFactory<Appointment, String>("type"));
-        // convert from UTC back to local
         monthlySt.setCellValueFactory(new PropertyValueFactory<Appointment, String>("start"));
         monthlyEnd.setCellValueFactory(new PropertyValueFactory<Appointment, String>("end"));
         monthlyCustId.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("custId"));
@@ -188,7 +187,6 @@ public class AppointmentController implements Initializable {
         weeklyLoc.setCellValueFactory(new PropertyValueFactory<Appointment, String>("loc"));
         weeklyCont.setCellValueFactory(new PropertyValueFactory<Appointment, String>("cont"));
         weeklyType.setCellValueFactory(new PropertyValueFactory<Appointment, String>("type"));
-        // convert from UTC back to local
         weeklySt.setCellValueFactory(new PropertyValueFactory<Appointment, String>("start"));
         weeklyEnd.setCellValueFactory(new PropertyValueFactory<Appointment, String>("end"));
         weeklyCustId.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("custId"));

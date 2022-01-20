@@ -45,8 +45,6 @@ public class AppointmentDatabase {
         return contacts;
     }
 
-
-
     public static Boolean updateAppointment(int id, String title, String desc, String loc, String type, String start,
                                          String end, int custId, int userId, int contId) throws Exception {
         String now = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
