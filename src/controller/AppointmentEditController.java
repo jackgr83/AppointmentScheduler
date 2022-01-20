@@ -48,6 +48,14 @@ public class AppointmentEditController implements Initializable {
     private Button save;
     @FXML
     private Button cancel;
+    @FXML
+    private RadioButton amSt;
+    @FXML
+    private RadioButton pmSt;
+    @FXML
+    private RadioButton amEnd;
+    @FXML
+    private RadioButton pmEnd;
 
     Alert error = new Alert(Alert.AlertType.ERROR);
     Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
@@ -69,8 +77,18 @@ public class AppointmentEditController implements Initializable {
         String dt = date.getValue().toString();
         String starttime = sttime.getText() + ":00";
         String endtime = etime.getText() + ":00";
-        String start = dt + " " + starttime;
-        String end = dt + " " + endtime;
+        String start = "";
+        String end = "";
+        if (amSt.isSelected()) {
+            start = dt + " " + starttime + " " + amSt.getText();
+        } else {
+            start = dt + " " + starttime + " " + pmSt.getText();
+        }
+        if (amEnd.isSelected()) {
+            end = dt + " " + endtime + " " + amEnd.getText();
+        } else {
+            end = dt + " " + endtime + " " + pmEnd.getText();
+        }
         int custId = CustomerDatabase.getCustomerId(cust.getValue().toString());
         int userId = Login.getUser().getUserId();
         int contId = AppointmentDatabase.getContactId(cont.getValue().toString());
@@ -82,17 +100,17 @@ public class AppointmentEditController implements Initializable {
             return;
         }
         // Check business hours
-        String[] businessHoursUtc = {"13","14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "00", "01", "02"};
-        String utcStart = AppointmentDatabase.convertToUtc(start);
-        String utcEnd = AppointmentDatabase.convertToUtc(end);
-        if (!Arrays.asList(businessHoursUtc).contains(utcStart.split("\\s+")[1].substring(0, 2)) ||
-                !Arrays.asList(businessHoursUtc).contains(utcEnd.split("\\s+")[1].substring(0, 2))) {
-            Alert error = new Alert(Alert.AlertType.ERROR);
-            error.setTitle("Error");
-            error.setHeaderText("Appointment start/end time is outside business hours (8:00AM-10:00PM EST)");
-            error.showAndWait();
-            return;
-        }
+//        String[] businessHoursUtc = {"13","14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "00", "01", "02"};
+//        String utcStart = AppointmentDatabase.convertToUtc(start);
+//        String utcEnd = AppointmentDatabase.convertToUtc(end);
+//        if (!Arrays.asList(businessHoursUtc).contains(utcStart.split("\\s+")[1].substring(0, 2)) ||
+//                !Arrays.asList(businessHoursUtc).contains(utcEnd.split("\\s+")[1].substring(0, 2))) {
+//            Alert error = new Alert(Alert.AlertType.ERROR);
+//            error.setTitle("Error");
+//            error.setHeaderText("Appointment start/end time is outside business hours (8:00AM-10:00PM EST)");
+//            error.showAndWait();
+//            return;
+//        }
 
         Boolean successful = AppointmentDatabase.updateAppointment(id, ttl, dsc, lc, tp, start, end, custId, userId, contId);
 
@@ -129,9 +147,38 @@ public class AppointmentEditController implements Initializable {
         stage.show();
     }
 
+    public void handleAmStRadio() {
+        amSt.setSelected(true);
+        pmSt.setSelected(false);
+    }
+
+    public void handleAmEndRadio() {
+        amEnd.setSelected(true);
+        pmEnd.setSelected(false);
+    }
+
+    public void handlePmStRadio() {
+        pmSt.setSelected(true);
+        amSt.setSelected(false);
+    }
+
+    public void handlePmEndRadio() {
+        amEnd.setSelected(false);
+        pmEnd.setSelected(true);
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        if (appointment.getStart().split("\\s+")[2].contains("AM")) {
+            amSt.setSelected(true);
+        } else {
+            pmSt.setSelected(true);
+        }
+        if (appointment.getEnd().split("\\s+")[2].contains("AM")) {
+            amEnd.setSelected(true);
+        } else {
+            pmEnd.setSelected(true);
+        }
         IdField.setText(String.valueOf(appointment.getId()));
         title.setText(appointment.getTitle());
         desc.setText(appointment.getDesc());
@@ -142,7 +189,7 @@ public class AppointmentEditController implements Initializable {
         etime.setText(en.substring(0, en.length() - 3));
         type.setItems(FXCollections.observableArrayList("Introduction", "Status Update", "One on One", "Review"));
         type.getSelectionModel().select(appointment.getType());
-        date.setValue(LocalDate.parse(appointment.getStart(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        date.setValue(LocalDate.parse(appointment.getStart(), DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss a")));
         System.out.println(date.getValue().toString());
         try {
             cust.setItems(CustomerDatabase.getCustomerNames());

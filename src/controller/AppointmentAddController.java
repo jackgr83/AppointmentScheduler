@@ -50,6 +50,15 @@ public class AppointmentAddController implements Initializable {
     private Button save;
     @FXML
     private Button cancel;
+    @FXML
+    private RadioButton amSt;
+    @FXML
+    private RadioButton pmSt;
+    @FXML
+    private RadioButton amEnd;
+    @FXML
+    private RadioButton pmEnd;
+
 
     Alert error = new Alert(Alert.AlertType.ERROR);
     Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
@@ -76,8 +85,18 @@ public class AppointmentAddController implements Initializable {
         String dt = date.getValue().toString();
         String starttime = sttime.getText() + ":00";
         String endtime = etime.getText() + ":00";
-        String start = dt + " " + starttime;
-        String end = dt + " " + endtime;
+        String start = "";
+        String end = "";
+        if (amSt.isSelected()) {
+            start = dt + " " + starttime + " " + amSt.getText();
+        } else {
+            start = dt + " " + starttime + " " + pmSt.getText();
+        }
+        if (amEnd.isSelected()) {
+            end = dt + " " + endtime + " " + amEnd.getText();
+        } else {
+            end = dt + " " + endtime + " " + pmEnd.getText();
+        }
         int custId = CustomerDatabase.getCustomerId(cust.getValue().toString());
         int userId = Login.getUser().getUserId();
         int contId = AppointmentDatabase.getContactId(cont.getValue().toString());
@@ -130,8 +149,30 @@ public class AppointmentAddController implements Initializable {
         IdField.setText(id.toString());
     }
 
+    public void handleAmStRadio() {
+        amSt.setSelected(true);
+        pmSt.setSelected(false);
+    }
+
+    public void handleAmEndRadio() {
+        amEnd.setSelected(true);
+        pmEnd.setSelected(false);
+    }
+
+    public void handlePmStRadio() {
+        pmSt.setSelected(true);
+        amSt.setSelected(false);
+    }
+
+    public void handlePmEndRadio() {
+        amEnd.setSelected(false);
+        pmEnd.setSelected(true);
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        amSt.setSelected(true);
+        amEnd.setSelected(true);
         type.setItems(FXCollections.observableArrayList("Introduction", "Status Update", "One on One", "Review"));
         try {
             cust.setItems(CustomerDatabase.getCustomerNames());

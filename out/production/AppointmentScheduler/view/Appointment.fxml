@@ -9,31 +9,31 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="649.0" prefWidth="953.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="649.0" prefWidth="953.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label layoutX="89.0" layoutY="42.0" text="Appointments">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <TabPane layoutX="130.0" layoutY="82.0" prefHeight="458.0" prefWidth="748.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane layoutX="28.0" layoutY="84.0" prefHeight="458.0" prefWidth="900.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab fx:id="MonthlyTab" text="Monthly">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="472.0" prefWidth="657.0">
                      <children>
-                        <TableView fx:id="MonthlyTable" layoutX="17.0" layoutY="14.0" prefHeight="389.0" prefWidth="715.0">
+                        <TableView fx:id="MonthlyTable" layoutX="17.0" layoutY="14.0" prefHeight="399.0" prefWidth="867.0">
                           <columns>
                             <TableColumn fx:id="monthlyId" prefWidth="35.0" text="ID" />
                             <TableColumn fx:id="monthlyTitle" prefWidth="57.0" text="Title" />
                               <TableColumn fx:id="monthlyDesc" prefWidth="76.0" text="Description" />
-                              <TableColumn fx:id="monthlyLoc" prefWidth="72.0" text="Location" />
+                              <TableColumn fx:id="monthlyLoc" prefWidth="66.0" text="Location" />
                               <TableColumn fx:id="monthlyCont" prefWidth="64.0" text="Contact" />
-                              <TableColumn fx:id="monthlyType" prefWidth="58.0" text="Type" />
-                              <TableColumn fx:id="monthlySt" prefWidth="94.0" text="Start" />
-                              <TableColumn fx:id="monthlyEnd" prefWidth="105.0" text="End" />
-                              <TableColumn fx:id="monthlyCustId" prefWidth="87.0" text="Customer ID" />
-                              <TableColumn fx:id="monthlyCreatorId" prefWidth="66.0" text="Creator ID" />
+                              <TableColumn fx:id="monthlyType" prefWidth="64.0" text="Type" />
+                              <TableColumn fx:id="monthlySt" prefWidth="178.0" text="Start" />
+                              <TableColumn fx:id="monthlyEnd" prefWidth="169.0" text="End" />
+                              <TableColumn fx:id="monthlyCustId" text="Customer ID" />
+                              <TableColumn fx:id="monthlyCreatorId" prefWidth="74.0" text="Creator ID" />
                           </columns>
                         </TableView>
                      </children>
@@ -64,9 +64,9 @@
           </Tab>
         </tabs>
       </TabPane>
-      <Button fx:id="Create" onAction="#handleCreateButton" layoutX="176.0" layoutY="559.0" mnemonicParsing="false" text="Create New Appointment" />
-      <Button fx:id="Edit" onAction="#handleEditButton" layoutX="353.0" layoutY="559.0" mnemonicParsing="false" text="Edit Appointment" />
-      <Button fx:id="Delete" onAction="#handleDeleteButton" layoutX="492.0" layoutY="559.0" mnemonicParsing="false" text="Delete Appointment" />
-      <Button fx:id="Back" onAction="#handleBackButton" layoutX="765.0" layoutY="599.0" mnemonicParsing="false" text="Back" />
+      <Button fx:id="Create" layoutX="176.0" layoutY="559.0" mnemonicParsing="false" onAction="#handleCreateButton" text="Create New Appointment" />
+      <Button fx:id="Edit" layoutX="353.0" layoutY="559.0" mnemonicParsing="false" onAction="#handleEditButton" text="Edit Appointment" />
+      <Button fx:id="Delete" layoutX="492.0" layoutY="559.0" mnemonicParsing="false" onAction="#handleDeleteButton" text="Delete Appointment" />
+      <Button fx:id="Back" layoutX="765.0" layoutY="599.0" mnemonicParsing="false" onAction="#handleBackButton" text="Back" />
    </children>
 </AnchorPane>
