@@ -113,6 +113,18 @@ public class CustomerDatabase {
 
     }
 
+    public static String getCustomerName(int custId) throws SQLException {
+        String query = "SELECT * FROM customers WHERE Customer_ID='" + custId + "';";
+        Statement sql = Database.getConnection().createStatement();
+        ResultSet records = sql.executeQuery(query);
+        String name = "";
+        while(records.next()) {
+            name = records.getString("Customer_Name");
+        }
+        sql.close();
+        return name;
+    }
+
     public static ObservableList<String> getCustomerNames() throws SQLException {
         ObservableList<String> customers = FXCollections.observableArrayList();
         String query = "SELECT * FROM customers";

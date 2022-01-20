@@ -40,6 +40,28 @@ public class AppointmentDatabase {
         return contacts;
     }
 
+
+
+    public static Boolean updateAppointment(int id, String title, String desc, String loc, String type, ZonedDateTime start,
+                                         ZonedDateTime end, int custId, int userId, int contId) throws SQLException {
+        String now = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        String sdt = start.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        String edt = end.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        String command = "UPDATE appointments SET Title='" + title + "', Description='" + desc + "', Location='" + loc + "', Type='" + type + "', Start='" +
+                sdt + "', End='" + edt + "', Last_Update='" + now + "', Last_Updated_By='" + Login.getUser().getUserName() + "', Customer_ID='" + custId +
+                "', User_ID='" + userId + "', Contact_ID='" + contId + "' WHERE Appointment_ID='" + id + "';";
+        Statement sql = Database.getConnection().createStatement();
+        try {
+            sql.executeUpdate(command);
+            sql.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            sql.close();
+            return false;
+        }
+    }
+
     public static Boolean addAppointment(int id, String title, String desc, String loc, String type, ZonedDateTime start,
                                          ZonedDateTime end, int custId, int userId, int contId) throws SQLException {
         String now = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -75,8 +97,9 @@ public class AppointmentDatabase {
 
     public static ObservableList<Appointment> getAllMonthlyAppointments() throws SQLException {
         ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
+        int month = LocalDate.now().getMonthValue();
         String query = "SELECT * FROM appointments as a INNER JOIN contacts as c on a.Contact_ID = c.Contact_ID" +
-                " WHERE a.Start >='" + LocalDate.now() + "' AND a.Start <='" + LocalDate.now().plusMonths(1) + "'";
+                " WHERE a.Start >='" + LocalDate.now().minusMonths(1) + "' AND a.Start <='" + LocalDate.now().plusMonths(1) + "'";
         Statement sql = Database.getConnection().createStatement();
         ResultSet records = sql.executeQuery(query);
 
@@ -102,7 +125,7 @@ public class AppointmentDatabase {
     public static ObservableList<Appointment> getAllWeeklyAppointments() throws SQLException {
         ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
         String query = "SELECT * FROM appointments as a INNER JOIN contacts as c on a.Contact_ID = c.Contact_ID" +
-                " WHERE a.Start >='" + LocalDate.now() + "' AND a.Start <='" + LocalDate.now().plusWeeks(1) + "'";
+                " WHERE a.Start >='" + LocalDate.now().minusWeeks(1) + "' AND a.Start <='" + LocalDate.now().plusWeeks(1) + "'";
         Statement sql = Database.getConnection().createStatement();
         ResultSet records = sql.executeQuery(query);
 
@@ -123,6 +146,21 @@ public class AppointmentDatabase {
         }
         sql.close();
         return allAppointments;
+    }
+
+    public static Boolean deleteAppointment(int id) throws SQLException {
+        String command = "DELETE FROM appointments WHERE Appointment_ID ='" + id + "';";
+        Statement sql = Database.getConnection().createStatement();
+        try {
+            sql.executeUpdate(command);
+            sql.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            sql.close();
+            return false;
+        }
+
     }
 
     public static Boolean deleteCustomerAppointments(int id) throws SQLException {

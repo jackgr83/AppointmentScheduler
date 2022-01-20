@@ -5,19 +5,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
 import model.AppointmentDatabase;
 import model.Customer;
+import model.CustomerDatabase;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AppointmentController implements Initializable {
@@ -79,6 +78,9 @@ public class AppointmentController implements Initializable {
     @FXML
     private Button Back;
 
+    Alert error = new Alert(Alert.AlertType.ERROR);
+    Alert warn = new Alert(Alert.AlertType.WARNING);
+
     public void handleBackButton() throws IOException {
         Stage stage = (Stage) Back.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/Main.fxml"));
@@ -90,8 +92,43 @@ public class AppointmentController implements Initializable {
         stage.show();
     }
 
-    public void handleDeleteButton() {
+    public void handleDeleteButton() throws SQLException {
+        Appointment selectedAppt;
+        if (MonthlyTab.isSelected()) {
+            selectedAppt = MonthlyTable.getSelectionModel().getSelectedItem();
+        } else {
+            selectedAppt = WeeklyTable.getSelectionModel().getSelectedItem();
+        }
+        if (selectedAppt == null) {
+            error.setTitle("Error");
+            error.setHeaderText("No appointment selected");
+            error.showAndWait();
+            return;
+        }
+        String message = "Are you sure you want to delete Appointment: " + selectedAppt.getId();
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, message, ButtonType.YES, ButtonType.NO);
+        confirm.setTitle("Warning");
+        Optional<ButtonType> clicked = confirm.showAndWait();
 
+        if (clicked.get() == ButtonType.YES) {
+            Boolean deletedAppt = AppointmentDatabase.deleteAppointment(selectedAppt.getId());
+
+            if (deletedAppt) {
+                Alert conf = new Alert(Alert.AlertType.CONFIRMATION);
+                conf.setTitle("Success");
+                conf.setHeaderText("Appointment deleted");
+                conf.showAndWait();
+            } else {
+                warn.setTitle("Failure");
+                warn.setHeaderText("Failed to delete appointment");
+                warn.showAndWait();
+            }
+            try {
+                populateAppointments();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void handleEditButton() throws IOException {
