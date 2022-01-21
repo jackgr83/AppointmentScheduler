@@ -1,6 +1,7 @@
 package controller;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -19,6 +20,7 @@ import java.sql.SQLException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
@@ -62,6 +64,10 @@ public class AppointmentEditController implements Initializable {
     Alert warn = new Alert(Alert.AlertType.WARNING);
 
     Appointment appointment;
+    Integer custApptStHour;
+    Integer custApptEndHour;
+    Integer enteredStHour;
+    Integer enteredEndHour;
 
     public AppointmentEditController(Appointment appointment) {
         this.appointment = appointment;
@@ -99,10 +105,64 @@ public class AppointmentEditController implements Initializable {
             error.showAndWait();
             return;
         }
-        // TODO: Check that appointment start < end
 
+        // Check that appointment start < end
+        if (Integer.parseInt(AppointmentDatabase.convertToUtc(start).split("\\s+")[1].substring(0,2)) >
+                Integer.parseInt(AppointmentDatabase.convertToUtc(end).split("\\s+")[1].substring(0,2))) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Error");
+            error.setHeaderText("Appointment start time must be before end time");
+            error.showAndWait();
+            return;
+        }
 
         // TODO: Check for overlapping appointments for customers
+        ArrayList<String[]> times = AppointmentDatabase.getOtherCustomerAppointmentTimes(custId, id);
+        for (int i=0;i<times.size();i++) {
+                System.out.println("Customer Appt TIME: " + times.get(i)[0] + " TO " + times.get(i)[1]);
+                if (Integer.parseInt(times.get(i)[0].split("\\s+")[1].substring(0, 1)) == 0) {
+                    this.custApptStHour = Integer.parseInt(times.get(i)[0].split("\\s+")[1].substring(1, 2));
+                } else {
+                    this.custApptStHour = Integer.parseInt(times.get(i)[0].split("\\s+")[1].substring(0, 2));
+                }
+                if (Integer.parseInt(times.get(i)[1].split("\\s+")[1].substring(0, 1)) == 0) {
+                    this.custApptEndHour = Integer.parseInt(times.get(i)[1].split("\\s+")[1].substring(1, 2));
+                } else {
+                    this.custApptEndHour = Integer.parseInt(times.get(i)[1].split("\\s+")[1].substring(0, 2));
+                }
+
+                if (Integer.parseInt(AppointmentDatabase.convertToUtc(start).split("\\s")[1].substring(0,1)) == 0) {
+                    this.enteredStHour = Integer.parseInt(AppointmentDatabase.convertToUtc(start).split("\\s")[1].substring(1, 2));
+                } else {
+                    this.enteredStHour = Integer.parseInt(AppointmentDatabase.convertToUtc(start).split("\\s")[1].substring(0, 2));
+                }
+                if (Integer.parseInt(AppointmentDatabase.convertToUtc(end).split("\\s")[1].substring(0,1)) == 0) {
+                    this.enteredEndHour = Integer.parseInt(AppointmentDatabase.convertToUtc(start).split("\\s")[1].substring(1, 2));
+                } else {
+                    this.enteredEndHour = Integer.parseInt(AppointmentDatabase.convertToUtc(start).split("\\s")[1].substring(0, 2));
+                }
+                //TODO: Add other cases
+                if ((this.enteredStHour >= this.custApptStHour) && (this.custApptEndHour >= this.enteredStHour)) {
+                    Alert error = new Alert(Alert.AlertType.ERROR);
+                    error.setTitle("Error");
+                    error.setHeaderText("Appointment times are overlapping");
+                    error.showAndWait();
+                    return;
+                }
+
+                if ((this.enteredStHour <= this.custApptStHour) && (this.enteredEndHour >= this.custApptStHour)) {
+                    Alert error = new Alert(Alert.AlertType.ERROR);
+                    error.setTitle("Error");
+                    error.setHeaderText("Appointment times are overlapping");
+                    error.showAndWait();
+                    return;
+                }
+
+
+
+        }
+
+
 
         // Check business hours
         String[] businessHoursUtc = {"13","14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "00", "01", "02"};

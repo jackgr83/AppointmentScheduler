@@ -108,9 +108,18 @@ public class AppointmentAddController implements Initializable {
             return;
         }
 
-        // TODO: Check that appointment start < end
-
+        // Check that appointment start < end
+        if (Integer.parseInt(AppointmentDatabase.convertToUtc(start).split("\\s+")[1].substring(0,2)) >
+                Integer.parseInt(AppointmentDatabase.convertToUtc(end).split("\\s+")[1].substring(0,2))) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Error");
+            error.setHeaderText("Appointment start time must be before end time");
+            error.showAndWait();
+            return;
+        }
         // TODO: Check for overlapping appointments for customers
+
+
 
         // Check business hours
         String[] businessHoursUtc = {"13","14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "00", "01", "02"};

@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.TimeZone;
@@ -144,7 +145,6 @@ public class AppointmentDatabase {
         return(localFormat.format(utcTime));
     }
 
-    // 11pm not working. converts to 18 utc which is 1pm local
     public static String convertToUtc(String local) throws ParseException {
         if (local.split("\\s+")[2].contains("PM")) {
             if (!local.split("\\s+")[1].substring(0,2).contains("12")) {
@@ -229,6 +229,19 @@ public class AppointmentDatabase {
             sql.close();
             return false;
         }
+    }
 
+    public static ArrayList<String[]> getOtherCustomerAppointmentTimes(int custId, int apptId) throws Exception {
+        ArrayList<String[]> customerAppointmentTimes = new ArrayList<>();
+        String query = "SELECT * FROM appointments WHERE NOT Appointment_ID='" + apptId + "' AND Customer_ID ='" + custId + "'";
+        Statement sql = Database.getConnection().createStatement();
+        ResultSet records = sql.executeQuery(query);
+
+        while (records.next()) {
+            String[] startEnd = new String[] {records.getString("Start"), records.getString("End")};
+            customerAppointmentTimes.add(startEnd);
+        }
+        sql.close();
+        return customerAppointmentTimes;
     }
 }
