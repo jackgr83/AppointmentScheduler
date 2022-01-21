@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
@@ -64,6 +65,10 @@ public class AppointmentAddController implements Initializable {
     Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
     Alert warn = new Alert(Alert.AlertType.WARNING);
     Integer id;
+    Integer custApptStHour;
+    Integer custApptEndHour;
+    Integer enteredStHour;
+    Integer enteredEndHour;
 
     public void handleCancel() throws IOException {
         Stage stage = (Stage) cancel.getScene().getWindow();
@@ -109,16 +114,73 @@ public class AppointmentAddController implements Initializable {
         }
 
         // Check that appointment start < end
-        if (Integer.parseInt(AppointmentDatabase.convertToUtc(start).split("\\s+")[1].substring(0,2)) >
-                Integer.parseInt(AppointmentDatabase.convertToUtc(end).split("\\s+")[1].substring(0,2))) {
-            Alert error = new Alert(Alert.AlertType.ERROR);
-            error.setTitle("Error");
-            error.setHeaderText("Appointment start time must be before end time");
-            error.showAndWait();
-            return;
-        }
-        // TODO: Check for overlapping appointments for customers
+//        if (Integer.parseInt(AppointmentDatabase.convertToUtc(start).split("\\s+")[1].substring(0,2)) >
+//                Integer.parseInt(AppointmentDatabase.convertToUtc(end).split("\\s+")[1].substring(0,2))) {
+//            Alert error = new Alert(Alert.AlertType.ERROR);
+//            error.setTitle("Error");
+//            error.setHeaderText("Appointment end time must occur after start time");
+//            error.showAndWait();
+//            return;
+//        }
 
+
+        // Check for overlapping appointment times for customer
+        ArrayList<String[]> times = AppointmentDatabase.getCustomerAppointmentTimes(custId, dt);
+        if (times.size() > 0){
+
+            for (int i=0;i<times.size();i++) {
+                System.out.println("Customer Appt TIME: " + times.get(i)[0] + " TO " + times.get(i)[1]);
+                if (Integer.parseInt(times.get(i)[0].split("\\s+")[1].substring(0, 1)) == 0) {
+                    this.custApptStHour = Integer.parseInt(times.get(i)[0].split("\\s+")[1].substring(1, 5).replaceAll(":", ""));
+                } else {
+                    this.custApptStHour = Integer.parseInt(times.get(i)[0].split("\\s+")[1].substring(0, 2).replaceAll(":", ""));
+                }
+                if (Integer.parseInt(times.get(i)[1].split("\\s+")[1].substring(0, 1)) == 0) {
+                    this.custApptEndHour = Integer.parseInt(times.get(i)[1].split("\\s+")[1].substring(1, 5).replaceAll(":", ""));
+                } else {
+                    this.custApptEndHour = Integer.parseInt(times.get(i)[1].split("\\s+")[1].substring(0, 5).replaceAll(":", ""));
+                }
+
+                if (Integer.parseInt(AppointmentDatabase.convertToUtc(start).split("\\s")[1].substring(0,1)) == 0) {
+                    this.enteredStHour = Integer.parseInt(AppointmentDatabase.convertToUtc(start).split("\\s")[1].substring(1, 5).replaceAll(":", ""));
+                } else {
+                    this.enteredStHour = Integer.parseInt(AppointmentDatabase.convertToUtc(start).split("\\s")[1].substring(0, 5).replaceAll(":", ""));
+                }
+                if (Integer.parseInt(AppointmentDatabase.convertToUtc(end).split("\\s")[1].substring(0,1)) == 0) {
+                    this.enteredEndHour = Integer.parseInt(AppointmentDatabase.convertToUtc(start).split("\\s")[1].substring(1, 5).replaceAll(":", ""));
+                } else {
+                    this.enteredEndHour = Integer.parseInt(AppointmentDatabase.convertToUtc(start).split("\\s")[1].substring(0, 5).replaceAll(":", ""));
+                }
+
+                if ((this.enteredStHour >= this.custApptStHour) && (this.custApptEndHour >= this.enteredStHour)) {
+                    Alert error = new Alert(Alert.AlertType.ERROR);
+                    error.setTitle("Error");
+                    error.setHeaderText("Appointment times are overlapping");
+                    error.showAndWait();
+                    return;
+                }
+
+                if ((this.enteredStHour <= this.custApptStHour) && (this.enteredEndHour > this.custApptStHour)) {
+                    Alert error = new Alert(Alert.AlertType.ERROR);
+                    error.setTitle("Error");
+                    error.setHeaderText("Appointment times are overlapping");
+                    error.showAndWait();
+                    return;
+                }
+
+                if ((this.enteredStHour <= this.custApptStHour) && (this.enteredEndHour > this.custApptEndHour)) {
+                    Alert error = new Alert(Alert.AlertType.ERROR);
+                    error.setTitle("Error");
+                    error.setHeaderText("Appointment times are overlapping");
+                    error.showAndWait();
+                    return;
+                }
+
+
+            }
+        } else {
+            System.out.println("No other appts for this customer");
+        }
 
 
         // Check business hours

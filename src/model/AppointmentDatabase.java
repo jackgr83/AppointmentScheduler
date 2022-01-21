@@ -130,7 +130,7 @@ public class AppointmentDatabase {
         Date utcTime = utcFormat.parse(utc);
         SimpleDateFormat localFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a");
         localFormat.setTimeZone(TimeZone.getDefault());
-        System.out.println("Converting from UTC: " + utc + " to Local: " + localFormat.format(utcTime));
+//        System.out.println("Converting from UTC: " + utc + " to Local: " + localFormat.format(utcTime));
         String local = localFormat.format(utcTime);
         if (Integer.parseInt(local.split("\\s+")[1].substring(0,1)) != 0 && Integer.parseInt(local.split("\\s+")[1].substring(0,2)) > 12) {
             Integer hour = (Integer.parseInt(local.split("\\s+")[1].substring(0, 2)) - 12);
@@ -162,7 +162,7 @@ public class AppointmentDatabase {
                 Date localTime = localFormat.parse(newLocal);
                 SimpleDateFormat utcFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 utcFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-                System.out.println("Converting from Local: " + local + " to UTC: " + utcFormat.format(localTime));
+//                System.out.println("Converting from Local: " + local + " to UTC: " + utcFormat.format(localTime));
                 return(utcFormat.format(localTime));
             }
 
@@ -172,7 +172,7 @@ public class AppointmentDatabase {
         Date localTime = localFormat.parse(local);
         SimpleDateFormat utcFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         utcFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        System.out.println("Converting from Local: " + local + " to UTC: " + utcFormat.format(localTime));
+//        System.out.println("Converting from Local: " + local + " to UTC: " + utcFormat.format(localTime));
         return(utcFormat.format(localTime));
     }
 
@@ -231,15 +231,38 @@ public class AppointmentDatabase {
         }
     }
 
-    public static ArrayList<String[]> getOtherCustomerAppointmentTimes(int custId, int apptId) throws Exception {
+    public static ArrayList<String[]> getCustomerAppointmentTimes(int custId, String date) throws Exception {
+        ArrayList<String[]> customerAppointmentTimes = new ArrayList<>();
+        String query = "SELECT * FROM appointments WHERE Customer_ID ='" + custId + "'";
+        Statement sql = Database.getConnection().createStatement();
+        ResultSet records = sql.executeQuery(query);
+
+        while (records.next()) {
+            String dt = records.getString("Start").split("\\s+")[0];
+            if (dt.equalsIgnoreCase(date)) {
+                System.out.println("DATE: " + dt + " INPUT: " + date);
+                String[] startEnd = new String[] {records.getString("Start"), records.getString("End")};
+                customerAppointmentTimes.add(startEnd);
+
+            }
+        }
+        sql.close();
+        return customerAppointmentTimes;
+    }
+
+    public static ArrayList<String[]> getOtherCustomerAppointmentTimes(int custId, int apptId, String date) throws Exception {
         ArrayList<String[]> customerAppointmentTimes = new ArrayList<>();
         String query = "SELECT * FROM appointments WHERE NOT Appointment_ID='" + apptId + "' AND Customer_ID ='" + custId + "'";
         Statement sql = Database.getConnection().createStatement();
         ResultSet records = sql.executeQuery(query);
 
         while (records.next()) {
-            String[] startEnd = new String[] {records.getString("Start"), records.getString("End")};
-            customerAppointmentTimes.add(startEnd);
+            String dt = records.getString("Start").split("\\s+")[0];
+            if (dt.equalsIgnoreCase(date)) {
+                System.out.println("DATE: " + dt + " INPUT: " + date);
+                String[] startEnd = new String[] {records.getString("Start"), records.getString("End")};
+                customerAppointmentTimes.add(startEnd);
+            }
         }
         sql.close();
         return customerAppointmentTimes;
