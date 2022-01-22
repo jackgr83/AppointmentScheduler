@@ -101,7 +101,7 @@ public class AppointmentDatabase {
         ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
         int month = LocalDate.now().getMonthValue();
         String query = "SELECT * FROM appointments as a INNER JOIN contacts as c on a.Contact_ID = c.Contact_ID" +
-                " WHERE a.Start >='" + LocalDate.now().minusMonths(1) + "' AND a.Start <='" + LocalDate.now().plusMonths(1) + "'";
+                " WHERE a.Start >='" + LocalDate.now() + "' AND a.Start <='" + LocalDate.now().plusMonths(1) + "'";
         Statement sql = Database.getConnection().createStatement();
         ResultSet records = sql.executeQuery(query);
 
@@ -179,7 +179,7 @@ public class AppointmentDatabase {
     public static ObservableList<Appointment> getAllWeeklyAppointments() throws SQLException, ParseException {
         ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
         String query = "SELECT * FROM appointments as a INNER JOIN contacts as c on a.Contact_ID = c.Contact_ID" +
-                " WHERE a.Start >='" + LocalDate.now().minusWeeks(1) + "' AND a.Start <='" + LocalDate.now().plusWeeks(1) + "'";
+                " WHERE a.Start >='" + LocalDate.now() + "' AND a.Start <='" + LocalDate.now().plusWeeks(1) + "'";
         Statement sql = Database.getConnection().createStatement();
         ResultSet records = sql.executeQuery(query);
 

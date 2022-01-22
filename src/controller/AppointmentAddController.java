@@ -18,12 +18,11 @@ import org.w3c.dom.Text;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class AppointmentAddController implements Initializable {
 
@@ -113,15 +112,23 @@ public class AppointmentAddController implements Initializable {
             return;
         }
 
-        // Check that appointment start < end
-//        if (Integer.parseInt(AppointmentDatabase.convertToUtc(start).split("\\s+")[1].substring(0,2)) >
-//                Integer.parseInt(AppointmentDatabase.convertToUtc(end).split("\\s+")[1].substring(0,2))) {
-//            Alert error = new Alert(Alert.AlertType.ERROR);
-//            error.setTitle("Error");
-//            error.setHeaderText("Appointment end time must occur after start time");
-//            error.showAndWait();
-//            return;
-//        }
+//        // Check that appointment start < end
+        // convert start to 24 hour
+        SimpleDateFormat twelveHourFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa");
+        twelveHourFormat.setTimeZone(TimeZone.getDefault());
+        Date twelveHourDateTimeStart = twelveHourFormat.parse(start);
+        Date twelveHourDateTimeEnd = twelveHourFormat.parse(end);
+        SimpleDateFormat twentyFourFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        twentyFourFormat.setTimeZone(TimeZone.getDefault());
+        Integer twentyFourStart = Integer.parseInt(twentyFourFormat.format(twelveHourDateTimeStart).split("\\s+")[1].substring(0,5).replaceAll(":",""));
+        Integer twentyFourEnd = Integer.parseInt(twentyFourFormat.format(twelveHourDateTimeEnd).split("\\s+")[1].substring(0,5).replaceAll(":",""));
+        if (twentyFourStart > twentyFourEnd) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Error");
+            error.setHeaderText("Appointment start time must occur before Appointment end time");
+            error.showAndWait();
+            return;
+        }
 
 
         // Check for overlapping appointment times for customer
