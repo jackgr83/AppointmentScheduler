@@ -42,20 +42,20 @@
           </Tab>
           <Tab fx:id="WeeklyTab" text="Weekly">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="429.0" prefWidth="790.0">
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="472.0" prefWidth="657.0">
                      <children>
-                        <TableView fx:id="WeeklyTable" layoutX="17.0" layoutY="14.0" prefHeight="389.0" prefWidth="715.0">
+                        <TableView fx:id="WeeklyTable" layoutX="17.0" layoutY="14.0" prefHeight="399.0" prefWidth="867.0">
                            <columns>
                               <TableColumn fx:id="weeklyId" prefWidth="35.0" text="ID" />
                               <TableColumn fx:id="weeklyTitle" prefWidth="57.0" text="Title" />
                               <TableColumn fx:id="weeklyDesc" prefWidth="76.0" text="Description" />
-                              <TableColumn fx:id="weeklyLoc" prefWidth="72.0" text="Location" />
+                              <TableColumn fx:id="weeklyLoc" prefWidth="66.0" text="Location" />
                               <TableColumn fx:id="weeklyCont" prefWidth="64.0" text="Contact" />
-                              <TableColumn fx:id="weeklyType" prefWidth="88.0" text="Type" />
-                              <TableColumn fx:id="weeklySt" prefWidth="78.0" text="Start" />
-                              <TableColumn fx:id="weeklyEnd" prefWidth="72.0" text="End" />
-                              <TableColumn fx:id="weeklyCustId" prefWidth="91.0" text="Customer ID" />
-                              <TableColumn fx:id="weeklyCreatorId" text="Creator ID" />
+                              <TableColumn fx:id="weeklyType" prefWidth="64.0" text="Type" />
+                              <TableColumn fx:id="weeklySt" prefWidth="178.0" text="Start" />
+                              <TableColumn fx:id="weeklyEnd" prefWidth="169.0" text="End" />
+                              <TableColumn fx:id="weeklyCustId" text="Customer ID" />
+                              <TableColumn fx:id="weeklyCreatorId" prefWidth="74.0" text="Creator ID" />
                            </columns>
                         </TableView>
                      </children>
