@@ -45,11 +45,11 @@
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab text="Appt. Totals By Contact">
+            <Tab text="Appt. Totals By Customer">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Label layoutX="36.0" layoutY="34.0" text="Total Number of Customer Appointments for Each Contact">
+                        <Label layoutX="36.0" layoutY="34.0" text="Total Number of Appointments for Each Customer">
                            <font>
                               <Font size="18.0" />
                            </font>

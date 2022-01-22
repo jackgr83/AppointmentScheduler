@@ -3,6 +3,7 @@ package model;
 import utility.Database;
 import utility.Log;
 
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +15,7 @@ public class Login {
     private static User user;
 
 
-    public static boolean tryLogin(String username, String password) throws SQLException {
+    public static boolean tryLogin(String username, String password) throws SQLException, IOException {
         String query = "SELECT * FROM USERS WHERE User_Name='" + username + "' AND Password='" + password + "'";
         Statement sql = Database.getConnection().createStatement();
         ResultSet records = sql.executeQuery(query);
