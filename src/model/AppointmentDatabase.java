@@ -10,10 +10,7 @@ import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -266,5 +263,37 @@ public class AppointmentDatabase {
         }
         sql.close();
         return customerAppointmentTimes;
+    }
+
+    public static ObservableList<Appointment> getAppointmentsIn15Mins() throws Exception{
+        ObservableList<Appointment> appointments = FXCollections.observableArrayList();
+
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime time = LocalDateTime.now();
+        ZonedDateTime timezone = time.atZone(ZoneId.systemDefault());
+        ZonedDateTime utctime = timezone.withZoneSameInstant(ZoneOffset.UTC);
+        ZonedDateTime utc15Ahead = utctime.plusMinutes(15);
+
+        String query = "SELECT * FROM appointments as a LEFT OUTER JOIN contacts as c ON a.Contact_ID = c.Contact_ID WHERE " +
+                "Start BETWEEN '" + utctime.format(format) + "' AND '" + utc15Ahead.format(format) + "' AND User_ID='" + Login.getUser().getUserId() + "'";
+        Statement sql = Database.getConnection().createStatement();
+        ResultSet records = sql.executeQuery(query);
+        while(records.next()) {
+            Appointment appointment = new Appointment(
+                    records.getInt("Appointment_ID"),
+                    records.getString("Title"),
+                    records.getString("Description"),
+                    records.getString("Location"),
+                    records.getString("Contact_Name"),
+                    records.getString("Type"),
+                    convertToLocal(records.getString("Start")),
+                    convertToLocal(records.getString("End")),
+                    records.getInt("Customer_ID"),
+                    records.getInt("User_ID")
+            );
+            appointments.add(appointment);
+        }
+        sql.close();
+        return appointments;
     }
 }

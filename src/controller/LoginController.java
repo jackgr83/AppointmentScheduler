@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -10,6 +11,8 @@ import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import model.Appointment;
+import model.AppointmentDatabase;
 import model.Login;
 
 import java.io.IOException;
@@ -57,13 +60,30 @@ public class LoginController implements Initializable {
 
     }
 
-    public void handleLoginButton() throws SQLException, IOException {
+
+    public void handleLoginButton() throws Exception {
         String username = UsernameField.getText();
         String password = PasswordField.getText();
 
         boolean valid = Login.tryLogin(username, password);
 
         if (valid) {
+
+            ObservableList<Appointment> upcomingAppts = AppointmentDatabase.getAppointmentsIn15Mins();
+            if (!upcomingAppts.isEmpty()) {
+                for (Appointment a : upcomingAppts ) {
+                    Alert warn = new Alert(Alert.AlertType.WARNING);
+                    warn.setTitle("Appointment in 15 minutes!");
+                    warn.setHeaderText("Appointment ID:" + a.getId() + " starts on " + a.getStart());
+                    warn.showAndWait();
+                }
+            } else {
+                Alert conf = new Alert(Alert.AlertType.CONFIRMATION);
+                conf.setTitle("No upcoming appointments");
+                conf.setHeaderText("No appointments in 15 minutes.");
+                conf.showAndWait();
+            }
+
             Stage stage = (Stage) LoginButton.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/Main.fxml"));
             MainController controller = new MainController();
@@ -72,6 +92,8 @@ public class LoginController implements Initializable {
             Scene scene = new Scene(parent);
             stage.setScene(scene);
             stage.show();
+
+
         } else if (language == "French"){
             error.setTitle("Erreur");
             error.setHeaderText("Nom d'utilisateur ou mot de passe invalide");
