@@ -19,6 +19,9 @@ import java.util.TimeZone;
 
 public class AppointmentDatabase {
 
+    /**
+     * @param name get contact ID given contact name
+     */
     public static Integer getContactId(String name) throws SQLException {
         Integer id = 0;
         String query = "SELECT * FROM contacts WHERE Contact_Name='" + name + "';";
@@ -31,6 +34,9 @@ public class AppointmentDatabase {
         return id;
     }
 
+    /**
+     * Get all contact names
+     */
     public static ObservableList<String> getContactNames() throws SQLException {
         ObservableList<String> contacts = FXCollections.observableArrayList();
         String query = "SELECT * FROM contacts";
@@ -45,6 +51,20 @@ public class AppointmentDatabase {
         return contacts;
     }
 
+    /**
+     * @param id
+     * @param title
+     * @param desc
+     * @param loc
+     * @param type
+     * @param start
+     * @param end
+     * @param custId
+     * @param userId
+     * @param contId
+     *
+     * Update the Appointment in the database
+     */
     public static Boolean updateAppointment(int id, String title, String desc, String loc, String type, String start,
                                          String end, int custId, int userId, int contId) throws Exception {
         String now = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -63,6 +83,20 @@ public class AppointmentDatabase {
         }
     }
 
+    /**
+     * @param id
+     * @param title
+     * @param desc
+     * @param loc
+     * @param type
+     * @param start
+     * @param end
+     * @param custId
+     * @param userId
+     * @param contId
+     *
+     * Add the Appointment to the database
+     */
     public static Boolean addAppointment(int id, String title, String desc, String loc, String type, String start,
                                          String end, int custId, int userId, int contId) throws Exception {
         String now = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -82,6 +116,9 @@ public class AppointmentDatabase {
         }
     }
 
+    /**
+     * Get total number of appointments in the database
+     */
     public static Integer getNumAppointments() throws SQLException {
         Integer rowCount = 0;
         String query = "SELECT * FROM appointments";
@@ -94,6 +131,9 @@ public class AppointmentDatabase {
         return rowCount;
     }
 
+    /**
+     * @return Appointment list of all monthly Appointments
+     */
     public static ObservableList<Appointment> getAllMonthlyAppointments() throws Exception {
         ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
         int month = LocalDate.now().getMonthValue();
@@ -121,6 +161,9 @@ public class AppointmentDatabase {
         return allAppointments;
     }
 
+    /**
+     * @param utc convert utc datetime string to local date time string
+     */
     public static String convertToLocal(String utc) throws ParseException {
         SimpleDateFormat utcFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         utcFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -142,6 +185,9 @@ public class AppointmentDatabase {
         return(localFormat.format(utcTime));
     }
 
+    /**
+     * @param local convert local datetime string to utc date time string
+     */
     public static String convertToUtc(String local) throws ParseException {
         if (local.split("\\s+")[2].contains("PM")) {
             if (!local.split("\\s+")[1].substring(0,2).contains("12")) {
@@ -173,6 +219,9 @@ public class AppointmentDatabase {
         return(utcFormat.format(localTime));
     }
 
+    /**
+     * @return Appointment list of all weekly appointments
+     */
     public static ObservableList<Appointment> getAllWeeklyAppointments() throws SQLException, ParseException {
         ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
         String query = "SELECT * FROM appointments as a INNER JOIN contacts as c on a.Contact_ID = c.Contact_ID" +
@@ -199,6 +248,9 @@ public class AppointmentDatabase {
         return allAppointments;
     }
 
+    /**
+     * @param id delete specific appointment
+     */
     public static Boolean deleteAppointment(int id) throws SQLException {
         String command = "DELETE FROM appointments WHERE Appointment_ID ='" + id + "';";
         Statement sql = Database.getConnection().createStatement();
@@ -214,6 +266,9 @@ public class AppointmentDatabase {
 
     }
 
+    /**
+     * @param id delete all appointments associated with specific customer
+     */
     public static Boolean deleteCustomerAppointments(int id) throws SQLException {
         String command = "DELETE FROM appointments WHERE Customer_ID ='" + id + "'";
         Statement sql = Database.getConnection().createStatement();
@@ -228,6 +283,11 @@ public class AppointmentDatabase {
         }
     }
 
+    /**
+     * @param custId
+     * @param date
+     * Get a customer's appointment times on specific day to check for overlapping times when adding an appointment
+     */
     public static ArrayList<String[]> getCustomerAppointmentTimes(int custId, String date) throws Exception {
         ArrayList<String[]> customerAppointmentTimes = new ArrayList<>();
         String query = "SELECT * FROM appointments WHERE Customer_ID ='" + custId + "'";
@@ -247,6 +307,12 @@ public class AppointmentDatabase {
         return customerAppointmentTimes;
     }
 
+    /**
+     * @param custId
+     * @param apptId
+     * @param date
+     * Get a customer's other appointment times on a specific day to check for overlapping times when editing an appointment
+     */
     public static ArrayList<String[]> getOtherCustomerAppointmentTimes(int custId, int apptId, String date) throws Exception {
         ArrayList<String[]> customerAppointmentTimes = new ArrayList<>();
         String query = "SELECT * FROM appointments WHERE NOT Appointment_ID='" + apptId + "' AND Customer_ID ='" + custId + "'";
@@ -265,6 +331,9 @@ public class AppointmentDatabase {
         return customerAppointmentTimes;
     }
 
+    /**
+     * @return Appointment list of any appointments occuring within 15 times of user's login
+     */
     public static ObservableList<Appointment> getAppointmentsIn15Mins() throws Exception{
         ObservableList<Appointment> appointments = FXCollections.observableArrayList();
 

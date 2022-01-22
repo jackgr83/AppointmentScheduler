@@ -15,6 +15,9 @@ public class Appointment {
     private int custId;
     private int userId;
 
+    /**
+     * This function initializes a new Appointment
+     */
     public Appointment(int id, String title, String desc, String loc, String cont,
                        String type, String start, String end, int custId, int userId) {
         this.id = id;
@@ -29,6 +32,9 @@ public class Appointment {
         this.userId = userId;
     }
 
+    /**
+     * Getter functions for all Appointment attributes
+     */
     public int getId() { return id; }
     public String getTitle() { return title; }
     public String getDesc() { return desc; }

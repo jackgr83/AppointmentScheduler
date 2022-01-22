@@ -48,6 +48,10 @@ public class CustomerController implements Initializable {
     Alert error = new Alert(Alert.AlertType.ERROR);
     Alert warn = new Alert(Alert.AlertType.WARNING);
 
+
+    /**
+     * This function takes user back to Main screen
+     */
     public void handleBackButton() throws IOException {
         Stage stage = (Stage) BackButton.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/Main.fxml"));
@@ -59,6 +63,9 @@ public class CustomerController implements Initializable {
         stage.show();
     }
 
+    /**
+     * This function takes user to add customer screen
+     */
     public void handleAddButton() throws IOException {
         Stage stage = (Stage) AddButton.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/CustomerAdd.fxml"));
@@ -70,6 +77,9 @@ public class CustomerController implements Initializable {
         stage.show();
     }
 
+    /**
+     * This function takes user back to Edit Customer screen
+     */
     public void handleEditButton() throws IOException {
 
         Customer selectedCustomer = CustomerTable.getSelectionModel().getSelectedItem();
@@ -84,6 +94,9 @@ public class CustomerController implements Initializable {
         stage.show();
     }
 
+    /**
+     * This function confirms with the user before deleting a Customer
+     */
     public void handleDeleteButton() throws IOException, SQLException {
         Customer selectedCustomer = CustomerTable.getSelectionModel().getSelectedItem();
         if (selectedCustomer == null) {
@@ -120,6 +133,9 @@ public class CustomerController implements Initializable {
 
     }
 
+    /**
+     * This function populates the Customer view table with all customers data
+     */
     public void populateCustomerTable() throws SQLException {
         IDColumn.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("id"));
         NameColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("name"));

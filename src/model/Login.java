@@ -14,7 +14,12 @@ public class Login {
 
     private static User user;
 
-
+    /**
+     * @param username
+     * @param password
+     *
+     * Check if username and password exists in the database
+     */
     public static boolean tryLogin(String username, String password) throws SQLException, IOException {
         String query = "SELECT * FROM USERS WHERE User_Name='" + username + "' AND Password='" + password + "'";
         Statement sql = Database.getConnection().createStatement();
@@ -32,6 +37,9 @@ public class Login {
 
     }
 
+    /**
+     * @return User
+     */
     public static User getUser() {
         return user;
     }

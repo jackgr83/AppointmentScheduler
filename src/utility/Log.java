@@ -9,6 +9,12 @@ import java.time.ZonedDateTime;
 import java.util.PrimitiveIterator;
 
 public class Log {
+    /**
+     * @param successful
+     * @param username
+     *
+     * Write a log text file with details for each login attempt
+     */
     public static void log (String username, boolean successful) throws IOException {
         String yesNo;
         if (successful) {

@@ -44,6 +44,9 @@ public class LoginController implements Initializable {
     String language = "English";
     Alert error = new Alert(Alert.AlertType.ERROR);
 
+    /**
+     * This function sets the Location Text in the upper right corner of the login screen
+     */
     void setLocation() {
         if (language == "French"){
             LocationInfoLabel.setText("Emplacement: " + ZoneId.systemDefault().toString());
@@ -52,6 +55,9 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * This function translates the inputs to French
+     */
     void translateFrench() {
         LoginHeaderLabel.setText("Connexion");
         UsernameLabel.setText("Nom d'utilisateur");
@@ -60,7 +66,9 @@ public class LoginController implements Initializable {
 
     }
 
-
+    /**
+     * This function handles the Login attempt and alerts user if there is an appointment upcoming in 15 minutes
+     */
     public void handleLoginButton() throws Exception {
         String username = UsernameField.getText();
         String password = PasswordField.getText();
@@ -110,6 +118,7 @@ public class LoginController implements Initializable {
 
     /**
      * Initialize the Login Screen
+     * Determine if user computer's language setting is in English or French
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {

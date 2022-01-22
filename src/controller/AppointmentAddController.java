@@ -69,6 +69,9 @@ public class AppointmentAddController implements Initializable {
     Integer enteredStHour;
     Integer enteredEndHour;
 
+    /**
+     * This function takes user back to the appointment view screen when Cancel button is pressed
+     */
     public void handleCancel() throws IOException {
         Stage stage = (Stage) cancel.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/Appointment.fxml"));
@@ -80,6 +83,14 @@ public class AppointmentAddController implements Initializable {
         stage.show();
     }
 
+    /**
+     * This function checks inputs in the following ways before adding a new appointment:
+     * Logical error checks:
+     * - No input can be empty
+     * - Start time must be before End time
+     * - Appointment cannot overlap any of the customer's other appointments
+     * - Appointment cannot occur outside of company business hours 8am-10pm est
+     */
     public void handleSave() throws Exception {
         String ttl = title.getText();
         String dsc = desc.getText();
@@ -227,11 +238,17 @@ public class AppointmentAddController implements Initializable {
 
     }
 
+    /**
+     * This function generates a sequential ID
+     */
     private void generateId() throws SQLException {
         id = (AppointmentDatabase.getNumAppointments() + 1);
         IdField.setText(id.toString());
     }
 
+    /**
+     * The next four functions handle the AM/PM buttons
+     */
     public void handleAmStRadio() {
         amSt.setSelected(true);
         pmSt.setSelected(false);

@@ -16,6 +16,9 @@ public class main extends Application {
         launch(args);
     }
 
+    /**
+     * This function starts the application at the Login page and initializes a connection to the database
+     */
     public void start(Stage stage) throws Exception {
         connectDatabase();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/Login.fxml"));

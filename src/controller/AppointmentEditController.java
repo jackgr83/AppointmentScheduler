@@ -72,6 +72,14 @@ public class AppointmentEditController implements Initializable {
         this.appointment = appointment;
     }
 
+    /**
+     * This function checks inputs in the following ways before updating the appointment:
+     * Logical error checks:
+     * - No input can be empty
+     * - Start time must be before End time
+     * - Appointment cannot overlap any of the customer's other appointments
+     * - Appointment cannot occur outside of company business hours 8am-10pm est
+     */
     public void handleSave() throws Exception {
         Integer id = Integer.parseInt(IdField.getText());
         String ttl = title.getText();
@@ -224,6 +232,9 @@ public class AppointmentEditController implements Initializable {
         }
     }
 
+    /**
+     * This function takes user back to the appointment view screen when Cancel is pressed
+     */
     public void handleCancel() throws IOException {
         Stage stage = (Stage) cancel.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/Appointment.fxml"));
@@ -235,6 +246,9 @@ public class AppointmentEditController implements Initializable {
         stage.show();
     }
 
+    /**
+     * The next four functions handle the AM/PM buttons
+     */
     public void handleAmStRadio() {
         amSt.setSelected(true);
         pmSt.setSelected(false);
@@ -255,6 +269,9 @@ public class AppointmentEditController implements Initializable {
         pmEnd.setSelected(true);
     }
 
+    /**
+     * This function sets the original appointment data into the update form
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         if (appointment.getStart().split("\\s+")[2].contains("AM")) {

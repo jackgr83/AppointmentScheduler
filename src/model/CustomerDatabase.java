@@ -13,6 +13,9 @@ import java.time.format.DateTimeFormatter;
 
 public class CustomerDatabase {
 
+    /**
+     * @param name get customer id given the name
+     */
     public static Integer getCustomerId(String name) throws SQLException {
         Integer id = 0;
         String query = "SELECT * FROM customers WHERE Customer_Name='" + name + "';";
@@ -25,6 +28,9 @@ public class CustomerDatabase {
         return id;
     }
 
+    /**
+     * @param country get all divisions of particular country
+     */
     public static ObservableList<String> getDivisions(String country) throws SQLException {
         ObservableList<String> divisions = FXCollections.observableArrayList();
         String query = "SELECT * FROM COUNTRIES RIGHT OUTER JOIN " +
@@ -38,6 +44,9 @@ public class CustomerDatabase {
         return divisions;
     }
 
+    /**
+     * @return string list of all countries for populating the country combo box
+     */
     public static ObservableList<String> getAllCountries() throws SQLException {
         ObservableList<String> allCountries = FXCollections.observableArrayList();
         String query = "SELECT DISTINCT Country FROM COUNTRIES";
@@ -51,6 +60,9 @@ public class CustomerDatabase {
         return allCountries;
     }
 
+    /**
+     * @param division get division id given the division name
+     */
     public static Integer getDivisionId(String division) throws SQLException {
         Integer id = 0;
         String query = "SELECT Division_ID FROM first_level_divisions WHERE Division = '" + division + "';";
@@ -63,6 +75,16 @@ public class CustomerDatabase {
         return id;
     }
 
+    /**
+     * @param id
+     * @param name
+     * @param address
+     * @param zip
+     * @param phone
+     * @param divisionId
+     *
+     * Update the customer in the database
+     */
     public static Boolean updateCustomer(int id, String name, String address, String zip, String phone, int divisionId) throws SQLException {
         String datetime = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
         String command = "UPDATE customers SET Customer_Name='" + name + "', Address='" + address + "', Postal_Code='" + zip + "', Phone='" +
@@ -80,6 +102,11 @@ public class CustomerDatabase {
         }
     }
 
+    /**
+     * @param id
+     *
+     * Delete customer from database
+     */
     public static Boolean deleteCustomer(int id) throws SQLException {
         String command = "DELETE FROM customers WHERE Customer_ID ='" + id + "'";
         Statement sql = Database.getConnection().createStatement();
@@ -94,6 +121,16 @@ public class CustomerDatabase {
         }
     }
 
+    /**
+     * @param id
+     * @param name
+     * @param address
+     * @param zip
+     * @param phone
+     * @param divisionId
+     *
+     * Add the customer to the database
+     */
     public static Boolean addCustomer(int id, String name, String address, String zip, String phone, int divisionId) throws SQLException {
         String datetime = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
         String command = "INSERT INTO CUSTOMERS \n" +
@@ -113,6 +150,11 @@ public class CustomerDatabase {
 
     }
 
+    /**
+     * @param custId
+     *
+     * Get the name of a specific customer given the id
+     */
     public static String getCustomerName(int custId) throws SQLException {
         String query = "SELECT * FROM customers WHERE Customer_ID='" + custId + "';";
         Statement sql = Database.getConnection().createStatement();
@@ -125,6 +167,9 @@ public class CustomerDatabase {
         return name;
     }
 
+    /**
+     * @return String list of all customers names
+     */
     public static ObservableList<String> getCustomerNames() throws SQLException {
         ObservableList<String> customers = FXCollections.observableArrayList();
         String query = "SELECT * FROM customers";
@@ -139,7 +184,9 @@ public class CustomerDatabase {
         return customers;
     }
 
-
+    /**
+     * @return Customer list of all customers
+     */
     public static ObservableList<Customer> getAllCustomers() throws SQLException {
         ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
         String query = "SELECT cu.Customer_ID, cu.Customer_Name, cu.Address, cu.Postal_Code, cu.Phone, d.Division, co.Country" +

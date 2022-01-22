@@ -31,7 +31,9 @@ public class ReportsController implements Initializable {
     private Button Back;
 
 
-
+    /**
+     * This function populates the first report text section
+     */
     public void createReport1() throws SQLException {
         ArrayList<String> lines = new ArrayList<String>();
         Statement sql = Database.getConnection().createStatement();
@@ -54,6 +56,9 @@ public class ReportsController implements Initializable {
         report1.setText(report1Text.toString());
     }
 
+    /**
+     * This function populates the second report text section
+     */
     public void createReport2() throws SQLException {
         Statement sql = Database.getConnection().createStatement();
 
@@ -86,6 +91,9 @@ public class ReportsController implements Initializable {
         report2.setText(report2Text.toString());
     }
 
+    /**
+     * This function populates the third report text section
+     */
     public void createReport3() throws SQLException {
         // Total Number of Customer Appointments for Each Customer
         ArrayList<String> lines = new ArrayList<String>();
@@ -107,7 +115,9 @@ public class ReportsController implements Initializable {
 
     }
 
-
+    /**
+     * This function takes the user back to the main screen
+     */
     public void handleBackButton() throws IOException {
         Stage stage = (Stage) Back.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/Main.fxml"));

@@ -9,6 +9,9 @@ public class Customer {
     private String country;
     private String division;
 
+    /**
+     * This function initializes a new Customer
+     */
     public Customer(int id, String name, String address, String zipcode, String phone, String country, String division) {
         this.id = id;
         this.name = name;
@@ -19,6 +22,9 @@ public class Customer {
         this.division = division;
     }
 
+    /**
+     * Getter functions for all Customer attributes
+     */
     public int getId() {
         return id;
     }

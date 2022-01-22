@@ -48,6 +48,11 @@ public class CustomerEditController implements Initializable {
         this.customer = customer;
     }
 
+    /**
+     * This function checks inputs in the following ways before updating the appointment:
+     * Logical error checks:
+     * - No input can be empty
+     */
     public void handleSaveButton() throws IOException, SQLException {
         Integer id = Integer.parseInt(IdField.getText());
         String name = NameField.getText();
@@ -88,6 +93,9 @@ public class CustomerEditController implements Initializable {
 
     }
 
+    /**
+     * This function takes user back to the customer view screen when Cancel button is pressed
+     */
     public void handleCancelButton() throws IOException {
         Stage stage = (Stage) CancelButton.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/Customer.fxml"));
@@ -99,8 +107,12 @@ public class CustomerEditController implements Initializable {
         stage.show();
     }
 
-
-
+    /**
+     * This function sets the inputs with the customer's data
+     *
+     * Lambda Expression - src/controller/CustomerEditController.java
+     * - Adds a change listener on the Country/Division Combo Boxes
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         IdField.setText(String.valueOf(customer.getId()));

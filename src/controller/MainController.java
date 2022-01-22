@@ -18,6 +18,9 @@ public class MainController {
     @FXML
     private Button ReportsButton;
 
+    /**
+     * This function takes user to the Customer main screen
+     */
     public void handleCustomerButton() throws IOException {
         Stage stage = (Stage) CustomerButton.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/Customer.fxml"));
@@ -29,6 +32,9 @@ public class MainController {
         stage.show();
     }
 
+    /**
+     * This function takes user to the Appointment main screen
+     */
     public void handleAppointmentButton() throws IOException{
         Stage stage = (Stage) AppointmentButton.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/Appointment.fxml"));
@@ -40,6 +46,9 @@ public class MainController {
         stage.show();
     }
 
+    /**
+     * This function takes user to the Reports main screen
+     */
     public void handleReportsButton() throws IOException {
         Stage stage = (Stage) ReportsButton.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/Reports.fxml"));

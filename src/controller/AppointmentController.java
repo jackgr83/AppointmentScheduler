@@ -82,6 +82,9 @@ public class AppointmentController implements Initializable {
     Alert error = new Alert(Alert.AlertType.ERROR);
     Alert warn = new Alert(Alert.AlertType.WARNING);
 
+    /**
+     * This function takes user back to the main screen when the "Back" button is pressed
+     */
     public void handleBackButton() throws IOException {
         Stage stage = (Stage) Back.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/Main.fxml"));
@@ -93,6 +96,9 @@ public class AppointmentController implements Initializable {
         stage.show();
     }
 
+    /**
+     * This function confirms with the user before deleting an appointment
+     */
     public void handleDeleteButton() throws Exception {
         Appointment selectedAppt;
         if (MonthlyTab.isSelected()) {
@@ -132,6 +138,9 @@ public class AppointmentController implements Initializable {
         }
     }
 
+    /**
+     * This function takes the user to the edit appointment screen
+     */
     public void handleEditButton() throws IOException {
 
         if (MonthlyTab.isSelected()) {
@@ -158,6 +167,9 @@ public class AppointmentController implements Initializable {
 
     }
 
+    /**
+     * This function takes the user to the add appointment screen
+     */
     public void handleCreateButton() throws IOException {
         Stage stage = (Stage) Create.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/AppointmentAdd.fxml"));
@@ -169,6 +181,9 @@ public class AppointmentController implements Initializable {
         stage.show();
     }
 
+    /**
+     * This function populates the monthly and weekly tables with appointments
+     */
     public void populateAppointments() throws Exception {
         monthlyId.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("id"));
         monthlyTitle.setCellValueFactory(new PropertyValueFactory<Appointment, String>("title"));

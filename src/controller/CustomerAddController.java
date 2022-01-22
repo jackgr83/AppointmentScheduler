@@ -46,6 +46,11 @@ public class CustomerAddController implements Initializable {
     Alert warn = new Alert(Alert.AlertType.WARNING);
     Integer id;
 
+    /**
+     * This function checks inputs in the following ways before updating the appointment:
+     * Logical error checks:
+     * - No input can be empty
+     */
     public void handleSaveButton() throws IOException, SQLException {
         String name = NameField.getText();
         String address = AddressField.getText();
@@ -85,6 +90,9 @@ public class CustomerAddController implements Initializable {
 
     }
 
+    /**
+     * This function takes user back to the customer view screen when Cancel button is pressed
+     */
     public void handleCancelButton() throws IOException {
         Stage stage = (Stage) CancelButton.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/Customer.fxml"));
@@ -96,13 +104,18 @@ public class CustomerAddController implements Initializable {
         stage.show();
     }
 
-
-
+    /**
+     * This function generates a sequential ID
+     */
     private void generateId() throws SQLException {
         id = (CustomerDatabase.getAllCustomers().size() + 1);
         IdField.setText(id.toString());
     }
 
+    /**
+     * Lambda Expression - src/controller/CustomerAddController.java
+     * - Adds a change listener on the Country/Division Combo Boxes
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
