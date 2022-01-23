@@ -170,46 +170,15 @@ public class AppointmentDatabase {
         Date utcTime = utcFormat.parse(utc);
         SimpleDateFormat localFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a");
         localFormat.setTimeZone(TimeZone.getDefault());
-//        System.out.println("Converting from UTC: " + utc + " to Local: " + localFormat.format(utcTime));
         String local = localFormat.format(utcTime);
-        if (Integer.parseInt(local.split("\\s+")[1].substring(0,1)) != 0 && Integer.parseInt(local.split("\\s+")[1].substring(0,2)) > 12) {
-            Integer hour = (Integer.parseInt(local.split("\\s+")[1].substring(0, 2)) - 12);
-            String hr = hour.toString();
-            if (hr.length() < 2) {
-                hr = "0" + hr;
-            }
-            String newTime = hr + local.split("\\s+")[1].substring(2);
-            String newLocal = local.split("\\s+")[0] + " " + newTime + " " + local.split("\\s+")[2];
-            return(newLocal);
-        }
-        return(localFormat.format(utcTime));
+//        System.out.println("Converting from UTC: " + utc + " to Local: " + local);
+        return(local);
     }
 
     /**
      * @param local convert local datetime string to utc date time string
      */
     public static String convertToUtc(String local) throws ParseException {
-        if (local.split("\\s+")[2].contains("PM")) {
-            if (!local.split("\\s+")[1].substring(0,2).contains("12")) {
-                Integer hour = 0;
-                if (local.split("\\s+")[1].substring(0,2).contains("10") || local.split("\\s+")[1].substring(0,2).contains("11")) {
-                    hour = (Integer.parseInt(local.split("\\s+")[1].substring(0, 2)) + 12);
-                } else {
-                    hour = (Integer.parseInt(local.split("\\s+")[1].substring(1, 2)) + 12);
-                }
-                String hr = hour.toString();
-                String newTime = hr + local.split("\\s+")[1].substring(2);
-                String newLocal = local.split("\\s+")[0] + " " + newTime;
-                SimpleDateFormat localFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                localFormat.setTimeZone(TimeZone.getDefault());
-                Date localTime = localFormat.parse(newLocal);
-                SimpleDateFormat utcFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                utcFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-//                System.out.println("Converting from Local: " + local + " to UTC: " + utcFormat.format(localTime));
-                return(utcFormat.format(localTime));
-            }
-
-        }
         SimpleDateFormat localFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a");
         localFormat.setTimeZone(TimeZone.getDefault());
         Date localTime = localFormat.parse(local);
