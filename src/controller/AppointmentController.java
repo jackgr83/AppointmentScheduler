@@ -123,7 +123,7 @@ public class AppointmentController implements Initializable {
             if (deletedAppt) {
                 Alert conf = new Alert(Alert.AlertType.CONFIRMATION);
                 conf.setTitle("Success");
-                conf.setHeaderText("Appointment deleted");
+                conf.setHeaderText("Canceled Appointment ID: " + selectedAppt.getId() + ", Type: " + selectedAppt.getType());
                 conf.showAndWait();
             } else {
                 warn.setTitle("Failure");

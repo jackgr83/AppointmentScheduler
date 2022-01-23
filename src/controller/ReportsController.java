@@ -32,9 +32,12 @@ public class ReportsController implements Initializable {
 
 
     /**
+     * LAMBDA - loop through ArrayList
+     * This Lambda Expression provides a cleaner way to iterate through an ArrayList than the
+     * older style: (e.g. `for (int i=0;i<ArrayList.size();i++) { do something }` )
+     * The Lambda function appends lines to the report text
+     *
      * This function populates the first report text section
-     * Lambda Expression - src/controller/ReportsController.java
-     * - Appends lines to report text
      */
     public void createReport1() throws SQLException {
         ArrayList<String> lines = new ArrayList<String>();
@@ -60,9 +63,6 @@ public class ReportsController implements Initializable {
 
     /**
      * This function populates the second report text section
-     * Lambda Expression - src/controller/ReportsController.java
-     * - Appends lines to report text
-     *
      */
     public void createReport2() throws SQLException {
         Statement sql = Database.getConnection().createStatement();
@@ -98,8 +98,6 @@ public class ReportsController implements Initializable {
 
     /**
      * This function populates the third report text section
-     * Lambda Expression - src/controller/ReportsController.java
-     * - Appends lines to report text
      */
     public void createReport3() throws SQLException {
         // Total Number of Customer Appointments for Each Customer

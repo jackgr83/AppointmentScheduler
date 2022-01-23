@@ -113,8 +113,9 @@ public class CustomerAddController implements Initializable {
     }
 
     /**
-     * Lambda Expression - src/controller/CustomerAddController.java
-     * - Adds a change listener on the Country/Division Combo Boxes
+     * LAMBDA - Adds a change listener to the Combo Box
+     * This Lambda expression simplifies and reduces the amount of code needed
+     * to add a change listener on the Country/Division Combo Boxes
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
