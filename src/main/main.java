@@ -7,6 +7,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import utility.Database;
 
+/**
+ * Javadocs located in /Javadoc
+ */
 public class main extends Application {
 
     /**
