@@ -33,6 +33,8 @@ public class ReportsController implements Initializable {
 
     /**
      * This function populates the first report text section
+     * Lambda Expression - src/controller/ReportsController.java
+     * - Appends lines to report text
      */
     public void createReport1() throws SQLException {
         ArrayList<String> lines = new ArrayList<String>();
@@ -50,14 +52,17 @@ public class ReportsController implements Initializable {
         sql.close();
 
         StringBuilder report1Text = new StringBuilder();
-        for (int i=0;i<lines.size();i++) {
-            report1Text.append(lines.get(i) + " \n");
-        }
+        lines.forEach((line) -> {
+            report1Text.append(line + " \n");
+        });
         report1.setText(report1Text.toString());
     }
 
     /**
      * This function populates the second report text section
+     * Lambda Expression - src/controller/ReportsController.java
+     * - Appends lines to report text
+     *
      */
     public void createReport2() throws SQLException {
         Statement sql = Database.getConnection().createStatement();
@@ -85,14 +90,16 @@ public class ReportsController implements Initializable {
 
         sql.close();
         StringBuilder report2Text = new StringBuilder();
-        for (int i=0;i<lines.size();i++) {
-            report2Text.append(lines.get(i) + " \n");
-        }
+        lines.forEach((line) -> {
+            report2Text.append(line + " \n");
+        });
         report2.setText(report2Text.toString());
     }
 
     /**
      * This function populates the third report text section
+     * Lambda Expression - src/controller/ReportsController.java
+     * - Appends lines to report text
      */
     public void createReport3() throws SQLException {
         // Total Number of Customer Appointments for Each Customer
@@ -108,9 +115,9 @@ public class ReportsController implements Initializable {
         sql.close();
 
         StringBuilder report3Text = new StringBuilder();
-        for (int i=0;i<lines.size();i++) {
-            report3Text.append(lines.get(i) + " \n");
-        }
+        lines.forEach((line) -> {
+            report3Text.append(line + " \n");
+        });
         report3.setText(report3Text.toString());
 
     }

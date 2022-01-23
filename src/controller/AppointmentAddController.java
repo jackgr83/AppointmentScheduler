@@ -170,7 +170,7 @@ public class AppointmentAddController implements Initializable {
                     this.enteredEndHour = Integer.parseInt(AppointmentDatabase.convertToUtc(start).split("\\s")[1].substring(0, 5).replaceAll(":", ""));
                 }
 
-                if ((this.enteredStHour >= this.custApptStHour) && (this.custApptEndHour >= this.enteredStHour)) {
+                if ((this.enteredStHour >= this.custApptStHour) && (this.custApptEndHour > this.enteredStHour)) {
                     Alert error = new Alert(Alert.AlertType.ERROR);
                     error.setTitle("Error");
                     error.setHeaderText("Appointment times are overlapping");

@@ -22,6 +22,7 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
+import java.util.function.Consumer;
 
 public class AppointmentEditController implements Initializable {
 
@@ -138,7 +139,7 @@ public class AppointmentEditController implements Initializable {
         ArrayList<String[]> times = AppointmentDatabase.getOtherCustomerAppointmentTimes(custId, id, dt);
         if (times.size() > 0){
             for (int i=0;i<times.size();i++) {
-                    System.out.println("Customer Appt TIME: " + times.get(i)[0] + " TO " + times.get(i)[1]);
+//                    System.out.println("Customer Appt TIME: " + times.get(i)[0] + " TO " + times.get(i)[1]);
                     if (Integer.parseInt(times.get(i)[0].split("\\s+")[1].substring(0, 1)) == 0) {
                         this.custApptStHour = Integer.parseInt(times.get(i)[0].split("\\s+")[1].substring(1, 5).replaceAll(":", ""));
                     } else {
@@ -161,7 +162,8 @@ public class AppointmentEditController implements Initializable {
                         this.enteredEndHour = Integer.parseInt(AppointmentDatabase.convertToUtc(start).split("\\s")[1].substring(0, 5).replaceAll(":", ""));
                     }
 
-                    if ((this.enteredStHour >= this.custApptStHour) && (this.custApptEndHour >= this.enteredStHour)) {
+                    if ((this.enteredStHour >= this.custApptStHour) && (this.custApptEndHour > this.enteredStHour)) {
+
                         Alert error = new Alert(Alert.AlertType.ERROR);
                         error.setTitle("Error");
                         error.setHeaderText("Appointment times are overlapping");

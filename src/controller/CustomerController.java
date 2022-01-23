@@ -83,7 +83,12 @@ public class CustomerController implements Initializable {
     public void handleEditButton() throws IOException {
 
         Customer selectedCustomer = CustomerTable.getSelectionModel().getSelectedItem();
-
+        if (selectedCustomer == null){
+            error.setTitle("Error");
+            error.setHeaderText("No customer selected");
+            error.showAndWait();
+            return;
+        }
         Stage stage = (Stage) EditButton.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/CustomerEdit.fxml"));
         CustomerEditController controller = new CustomerEditController(selectedCustomer);

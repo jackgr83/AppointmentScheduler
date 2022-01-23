@@ -145,6 +145,12 @@ public class AppointmentController implements Initializable {
 
         if (MonthlyTab.isSelected()) {
             Appointment selectedAppt = MonthlyTable.getSelectionModel().getSelectedItem();
+            if (selectedAppt == null){
+                error.setTitle("Error");
+                error.setHeaderText("No appointment selected");
+                error.showAndWait();
+                return;
+            }
             Stage stage = (Stage) Edit.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/AppointmentEdit.fxml"));
             AppointmentEditController controller = new AppointmentEditController(selectedAppt);
@@ -155,6 +161,12 @@ public class AppointmentController implements Initializable {
             stage.show();
         } else {
             Appointment selectedAppt = WeeklyTable.getSelectionModel().getSelectedItem();
+            if (selectedAppt == null){
+                error.setTitle("Error");
+                error.setHeaderText("No appointment selected");
+                error.showAndWait();
+                return;
+            }
             Stage stage = (Stage) Edit.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/AppointmentEdit.fxml"));
             AppointmentEditController controller = new AppointmentEditController(selectedAppt);
